@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ClubDeportivo</string>
+    <string name="bienvenida">Bienvenido al Club Deportivo</string>
+    <string name="description">Gestión integral de socios y actividades</string>
+    <string name="descriptionLogo">Logo Club Deportivo</string>
+    <string name="ingresar">Ingresar</string>
+    <string name="IniciarSesion">Iniciar sesión</string>
+</resources>
