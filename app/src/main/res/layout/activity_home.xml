@@ -11,10 +11,11 @@
         android:id="@+id/tvBienvenida"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp"
         android:text="Bienvenido administrador:"
         android:textColor="#FFFFFF"
-        android:textSize="22sp"
+        android:textSize="25sp"
         android:textStyle="bold" />
 
     <!-- 3. Subtítulo -->
@@ -25,7 +26,7 @@
         android:layout_marginBottom="100dp"
         android:text="nombre"
         android:textColor="#DEDDDD"
-        android:textSize="16sp" />
+        android:textSize="25sp" />
 
     <Button
         android:id="@+id/btnRegistro"
