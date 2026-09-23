@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Registrar Usuario:"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp" />
+
+
+
+        <EditText
+            android:id="@+id/etNombre"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/line_bottom_green"
+            android:hint="Nombre"
+            android:inputType="text"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/white"/>
+
+        <!-- Apellido -->
+        <EditText
+            android:id="@+id/etApellido"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/line_bottom_green"
+            android:hint="Apellido"
+            android:inputType="text"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/white"/>
+
+        <!-- DNI -->
+
+        <EditText
+            android:id="@+id/etDni"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/line_bottom_green"
+            android:hint="DNI"
+            android:inputType="number"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/white"/>
+
+        <!-- Teléfono -->
+
+
+        <EditText
+            android:id="@+id/etTelefono"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/line_bottom_green"
+            android:hint="Telefono"
+            android:inputType="phone"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/white"/>
+
+        <!-- E-mail -->
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/line_bottom_green"
+            android:hint="E-mail"
+            android:inputType="textEmailAddress"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/white" />
+
+        <!-- Selección Socio / No Socio -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="12dp">
+
+            <CheckBox
+                android:id="@+id/cbSocio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Socio"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/cbNoSocio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="No Socio"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Apto Físico -->
+        <CheckBox
+            android:id="@+id/cbAptoFisico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apto Físico"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Botones Registrar y Limpiar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="20dp">
+
+            <Button
+                android:id="@+id/btnRegistrar"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/GreenStrong"
+                android:text="Registrar"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnLimpiar"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:backgroundTint="@color/GreenStrong"
+                android:text="Limpiar"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Botón Menú / Volver -->
+        <Button
+            android:id="@+id/btnMenu"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/GreenStrong"
+            android:text="Menú"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/imgLogoLogin"
+            android:layout_width="160dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="Logo Club"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo" />
+
+    </LinearLayout>
+</ScrollView>
