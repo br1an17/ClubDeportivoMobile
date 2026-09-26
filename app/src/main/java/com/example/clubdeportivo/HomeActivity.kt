@@ -24,6 +24,11 @@ import androidx.appcompat.app.AppCompatActivity
                 val intent = Intent(this, RegisterActivity::class.java)
                 startActivity(intent)
             }
+            val btnBuscarUsuario = findViewById<Button>(R.id.btnBuscarUsuario)
+            btnBuscarUsuario.setOnClickListener {
+                val intent = Intent(this, BuscarUsuarioActivity::class.java)
+                startActivity(intent)
+            }
 
             val btnSalir = findViewById<Button>(R.id.btnSalir)
 
