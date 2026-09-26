@@ -43,14 +43,14 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/btnAsignarActividad"
+        android:id="@+id/btnBuscarUsuario"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="14dp"
         android:backgroundTint="@color/GreenStrong"
-        android:text="AsignarActividad"
+        android:text="Buscar usuario"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -78,18 +78,7 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
-    <Button
-        android:id="@+id/btnCobrar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="14dp"
-        android:backgroundTint="@color/GreenStrong"
-        android:text="Cobrar Cuota"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+
 
 
     <Button

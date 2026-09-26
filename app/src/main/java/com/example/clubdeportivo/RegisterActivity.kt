@@ -1,5 +1,6 @@
 package com.example.clubdeportivo
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 class RegisterActivity : AppCompatActivity() {
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -25,7 +27,7 @@ class RegisterActivity : AppCompatActivity() {
 
         val btnRegistrar = findViewById<Button>(R.id.btnRegistrar)
         val btnLimpiar = findViewById<Button>(R.id.btnLimpiar)
-        val btnMenu = findViewById<Button>(R.id.btnMenu)
+        val btnVolver = findViewById<Button>(R.id.btnVolver)
 
         // Control para que no marque Socio y No Socio al mismo tiempo
         cbSocio.setOnCheckedChangeListener { _, isChecked ->
@@ -62,7 +64,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         // Botón Menú: vuelve a la pantalla anterior
-        btnMenu.setOnClickListener {
+        btnVolver.setOnClickListener {
             finish()
         }
     }
