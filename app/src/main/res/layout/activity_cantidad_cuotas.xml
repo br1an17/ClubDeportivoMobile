@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp">
+
+        <!-- TÍTULO -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cantidad de cuotas"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="18dp" />
+
+        <!-- TARJETA -->
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="Tarjeta"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp" />
+
+        <EditText
+            android:id="@+id/etTarjeta"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_input"
+            android:hint="Ingrese tarjeta"
+            android:inputType="text"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:textColor="@color/black"
+            android:textColorHint="#666666"
+            android:textSize="15sp"
+            android:singleLine="true"
+            android:layout_marginBottom="10dp" />
+
+        <!-- NÚMERO DE TARJETA -->
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="Numero de tarjeta"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp" />
+
+        <EditText
+            android:id="@+id/etNumeroTarjeta"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_input"
+            android:hint="Ingrese número de tarjeta"
+            android:inputType="number"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:textColor="@color/black"
+            android:textColorHint="#666666"
+            android:textSize="15sp"
+            android:singleLine="true"
+            android:layout_marginBottom="10dp" />
+
+        <!-- CÓDIGO -->
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="Cod. de verificacion"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp" />
+
+        <EditText
+            android:id="@+id/etCodigoVerificacion"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_input"
+            android:hint="Código"
+            android:inputType="number"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:textColor="@color/black"
+            android:textColorHint="#666666"
+            android:textSize="15sp"
+            android:singleLine="true"
+            android:layout_marginBottom="24dp" />
+
+        <!-- 1 PAGO -->
+        <Button
+            android:id="@+id/btnUnPago"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/GreenStrong"
+            android:text="1 Pago"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:layout_marginBottom="22dp" />
+
+        <!-- 3 Y 6 CUOTAS -->
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="20dp">
+
+            <Button
+                android:id="@+id/btnTresCuotas"
+                android:layout_width="143dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="14dp"
+                android:backgroundTint="@color/GreenStrong"
+                android:text="3 cuotas"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/btnSeisCuotas"
+                android:layout_width="143dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/GreenStrong"
+                android:text="6 cuotas"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+
+        <!-- 9 Y 12 CUOTAS -->
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="38dp">
+
+            <Button
+                android:id="@+id/btnNueveCuotas"
+                android:layout_width="143dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="14dp"
+                android:backgroundTint="@color/GreenStrong"
+                android:text="9 cuotas"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/btnDoceCuotas"
+                android:layout_width="143dp"
+                android:layout_height="50dp"
+                android:backgroundTint="@color/GreenStrong"
+                android:text="12 cuotas"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+
+        <!-- VOLVER -->
+        <Button
+            android:id="@+id/btnVolver"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/GreenStrong"
+            android:text="Volver"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:layout_marginBottom="20dp" />
+
+        <!-- LOGO -->
+        <ImageView
+            android:id="@+id/imgLogoCantidadCuotas"
+            android:layout_width="170dp"
+            android:layout_height="90dp"
+            android:contentDescription="Logo Club"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo" />
+
+    </LinearLayout>
+
+</ScrollView>
