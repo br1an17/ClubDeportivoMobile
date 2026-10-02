@@ -6,6 +6,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
+
 class LoginActivity:AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,7 +17,7 @@ class LoginActivity:AppCompatActivity() {
         val campoUsuario = findViewById<EditText>(R.id.etUsuario)
         val campoPassword = findViewById<EditText>(R.id.etPassword)
         val btnIngresar = findViewById<Button>(R.id.btnIngresarLogin)
-        val btnSalir = findViewById<Button>(R.id.btnSalir)
+        val btnVolver = findViewById<Button>(R.id.btnVolver)
 
 
         btnIngresar.setOnClickListener {
@@ -41,7 +42,7 @@ class LoginActivity:AppCompatActivity() {
             }
         }
 
-        btnSalir.setOnClickListener {
+        btnVolver.setOnClickListener {
             finish()
         }
     }

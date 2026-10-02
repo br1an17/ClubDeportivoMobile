@@ -36,8 +36,12 @@
             android:exported="false" />
         <!-- 4. BuscarUsuario -->
         <activity
-            android:name=".BuscarUsuarioActivity"
+            android:name=".SerchUserActivity"
             android:exported="false" />
+        <!-- 5. acciones sobre el usuario-->
+        <activity
+            android:name=".ActionsUserActivity"
+            android:exported="false"/>
 
     </application>
 

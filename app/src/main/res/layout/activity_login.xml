@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:padding="32dp">
+    style="@style/MarcoGeneralPantalla">
 
 
     <!-- Título principal -->
@@ -61,15 +56,8 @@
 
     <!-- Botón Salir -->
     <Button
-        android:id="@+id/btnSalir"
-        android:layout_width="220dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="32dp"
-        android:backgroundTint="@color/GreenStrong"
-        android:text="Salir"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:id="@+id/btnVolver"
+        style="@style/BotonVolver" />
 
     <!-- Logo del club en la parte inferior -->
     <ImageView
