@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/MarcoGeneralPantalla">
+    style="@style/MarcoGeneralPantalla"
+    >
 
     <TextView
-        android:id="@+id/tvBienvenida"
+        android:id="@+id/tvUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp"
-        android:text="Bienvenido administrador:"
-        android:textColor="#FFFFFF"
+        android:text="El usuario es:"
+        android:textColor="@color/white"
         android:textSize="25sp"
         android:textStyle="bold" />
 
     <!-- 3. Subtítulo -->
     <TextView
-        android:id="@+id/tvSubtitulo"
+        android:id="@+id/tvNombreSocio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
@@ -24,25 +25,25 @@
         android:textSize="25sp" />
 
     <Button
-        android:id="@+id/btnRegistro"
-        android:text="Registro"
+        android:id="@+id/btnAsignarActividades"
         style="@style/BotonMenu"
-       />
+        android:text="Asignar actividades"
+         />
 
     <Button
-        android:id="@+id/btnBuscarUsuario"
-        android:text="Buscar usuario"
+        android:id="@+id/btnVerActividades"
         style="@style/BotonMenu"
+        android:text="Actividades asignadas"
         />
     <Button
-        android:id="@+id/btnVenceHoy"
-        android:text="Cuota a Vencer"
+        android:id="@+id/btnCarnet"
         style="@style/BotonMenu"
-       />
+        android:text="Carnet"
+        />
     <Button
-        android:id="@+id/btnVencida"
-        android:text="Cuota Vencida"
+        android:id="@+id/btnCobrarCuota"
         style="@style/BotonMenu"
+        android:text="Cobrar Cuota"
          />
 
 
