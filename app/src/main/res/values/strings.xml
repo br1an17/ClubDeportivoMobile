@@ -5,4 +5,7 @@
     <string name="descriptionLogo">Logo Club Deportivo</string>
     <string name="ingresar">Ingresar</string>
     <string name="IniciarSesion">Iniciar sesión</string>
+    <string name="volver">Volver</string>
+
+
 </resources>

@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 
-    class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 
             val tvSubtitulo = findViewById<TextView>(R.id.tvSubtitulo)
 
-            tvSubtitulo.text = "$nombreUsuario"
+            tvSubtitulo.text = nombreUsuario
 
             val btnRegistro = findViewById<Button>(R.id.btnRegistro)
             btnRegistro.setOnClickListener {
@@ -26,7 +26,7 @@ import androidx.appcompat.app.AppCompatActivity
             }
             val btnBuscarUsuario = findViewById<Button>(R.id.btnBuscarUsuario)
             btnBuscarUsuario.setOnClickListener {
-                val intent = Intent(this, BuscarUsuarioActivity::class.java)
+                val intent = Intent(this, SerchUserActivity::class.java)
                 startActivity(intent)
             }
             // BOTÓN CUOTA A VENCER
@@ -39,10 +39,11 @@ import androidx.appcompat.app.AppCompatActivity
                 )
                 startActivity(intent)
             }
-            val btnSalir = findViewById<Button>(R.id.btnSalir)
+
+            val btnSalir = findViewById<Button>(R.id.btnVolver)
 
             btnSalir.setOnClickListener {
                 finish()
             }
         }
-    }
+}
