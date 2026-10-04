@@ -29,7 +29,6 @@ class RegisterActivity : AppCompatActivity() {
         val btnLimpiar = findViewById<Button>(R.id.btnLimpiar)
         val btnVolver = findViewById<Button>(R.id.btnVolver)
 
-        // Control para que no marque Socio y No Socio al mismo tiempo
         cbSocio.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) cbNoSocio.isChecked = false
         }
@@ -37,7 +36,7 @@ class RegisterActivity : AppCompatActivity() {
             if (isChecked) cbSocio.isChecked = false
         }
 
-        // Botón Limpiar: resetea todos los campos
+
         btnLimpiar.setOnClickListener {
             etNombre.text.clear()
             etApellido.text.clear()
@@ -49,7 +48,7 @@ class RegisterActivity : AppCompatActivity() {
             cbAptoFisico.isChecked = false
         }
 
-        // Botón Registrar: valida datos y muestra confirmación
+
         btnRegistrar.setOnClickListener {
             val nombre = etNombre.text.toString().trim()
             val apellido = etApellido.text.toString().trim()
@@ -63,7 +62,6 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        // Botón Menú: vuelve a la pantalla anterior
         btnVolver.setOnClickListener {
             finish()
         }

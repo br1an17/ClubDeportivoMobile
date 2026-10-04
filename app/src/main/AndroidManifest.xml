@@ -46,8 +46,11 @@
         <activity
             android:name=".AssignActivityActivity"
             android:exported="false"/>
-
-
+        <!-- 7.Detalles de las actividades -->
+        <activity
+            android:name=".DetailActivity"
+            android:exported="false"
+        />
         <!-- Comprobante -->
         <activity
             android:name=".ComprobantePagoActivity"

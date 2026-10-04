@@ -29,7 +29,7 @@ class HomeActivity : AppCompatActivity() {
                 val intent = Intent(this, SerchUserActivity::class.java)
                 startActivity(intent)
             }
-            // BOTÓN CUOTA A VENCER
+
             val btnVenceHoy = findViewById<Button>(R.id.btnVenceHoy)
 
             btnVenceHoy.setOnClickListener {
