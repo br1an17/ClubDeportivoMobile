@@ -15,6 +15,8 @@ class DetailActivity: AppCompatActivity(){
     private var actividadHorario: String = ""
     private var actividadProfesor: String = ""
 
+    private var actividadCosto: Double = 0.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_activitys)
@@ -25,17 +27,19 @@ class DetailActivity: AppCompatActivity(){
         actividadNombre = intent.getStringExtra("ACTIVIDAD_NOMBRE") ?: "Sin Actividad"
         actividadHorario = intent.getStringExtra("ACTIVIDAD_HORARIO") ?: "20:00"
         actividadProfesor = intent.getStringExtra("ACTIVIDAD_PROFESOR") ?: "Por Asignar"
-
+        actividadCosto = intent.getDoubleExtra("ACTIVIDAD_VALOR", 10000.0)
 
         val tvNombreActividad = findViewById<TextView>(R.id.tvNombreActividad)
         val tvHorarioActividad = findViewById<TextView>(R.id.tvHorarioActividad)
         val tvNombreProfesor = findViewById<TextView>(R.id.tvNombreProfesor)
+        val tvValorActividad = findViewById<TextView>(R.id.tvValor)
         val btnConfirmarAsignar = findViewById<Button>(R.id.btnConfirmarAsignar)
         val btnVolver = findViewById<Button>(R.id.btnVolver)
 
         tvNombreActividad.text = actividadNombre
         tvHorarioActividad.text = actividadHorario
         tvNombreProfesor.text = actividadProfesor
+        tvValorActividad.text = "$ $actividadCosto"
 
         btnConfirmarAsignar.setOnClickListener {
             asignarActividadASocio()

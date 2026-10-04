@@ -51,6 +51,10 @@
             android:name=".DetailActivity"
             android:exported="false"
         />
+        <!-- 8. Actividades asignadas -->
+        <activity
+            android:name=".ActivitysAsiggnedActivity"
+            android:exported="false"/>
         <!-- Comprobante -->
         <activity
             android:name=".ComprobantePagoActivity"
