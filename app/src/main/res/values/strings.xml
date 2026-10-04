@@ -5,4 +5,6 @@
     <string name="descriptionLogo">Logo Club Deportivo</string>
     <string name="ingresar">Ingresar</string>
     <string name="IniciarSesion">Iniciar sesión</string>
+    <string name="subtitulo_cuota_vencida"><![CDATA[este socio tiene la cuota <font color="#FF0000">vencida</font>]]></string>
+
 </resources>

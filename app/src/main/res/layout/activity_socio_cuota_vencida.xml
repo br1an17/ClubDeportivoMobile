@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <!-- Título Principal -->
+            <TextView
+                android:id="@+id/tvTituloSocioVencido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Socio Cuota Vencida"
+                android:textColor="#FFFFFF"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <!-- Ícono de Alerta Roja -->
+            <ImageView
+                android:id="@+id/imgAlert"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:contentDescription="Alerta"
+                android:src="@android:drawable/ic_dialog_alert"
+                app:tint="#FF0000" />
+
+            <!-- Subtítulo de Alerta con parte en rojo -->
+            <TextView
+                android:id="@+id/tvSubtituloAlerta"
+                android:layout_width="246dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="este socio tiene la cuota vencida"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <!-- Línea Separadora Divisora -->
+            <View
+                android:layout_width="220dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="16dp"
+                android:background="#A0A0A0" />
+
+            <!-- Campo 1: Nombre -->
+            <TextView
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:text="Nombre"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvNombreSocio"
+                android:layout_width="270dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_rounded_field"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="juan pablo"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- Campo 2: N.º de Afiliado -->
+
+            <TextView
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:text="N.º de Afiliado"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvNumAfiliado"
+                android:layout_width="270dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_rounded_field"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="1232465498"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- Campo 3: Fecha de Vencimiento -->
+            <TextView
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:text="Fecha de Vencimiento"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvFechaVencimiento"
+                android:layout_width="270dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_rounded_field"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="10/5/2026"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- Campo 4: Días Vencidos -->
+            <TextView
+                android:layout_width="320dp"
+                android:layout_height="19dp"
+                android:text="Días Vencidos"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- Cuadro de Advertencia con borde rojo -->
+            <TextView
+                android:id="@+id/tvDiasVencidos"
+                android:layout_width="270dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_rounded_field"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="15 Dias"
+                android:textColor="#FF0000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="312dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_alert_box_red"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="Calendario Alerta"
+                    android:src="@android:drawable/ic_menu_my_calendar"
+                    app:tint="#FF0000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="La cuota esta vencida.\nDebe regularizar su situacion\npara continuar utilizando los\nbeneficios del club"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Botón Cobrar Cuota -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCobrarCuota"
+                android:layout_width="254dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#33FF00"
+                android:text="Cobrar Cuota"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:cornerRadius="16dp" />
+
+            <!-- Botón Volver -->
+
+            <!-- Logo en la parte inferior -->
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVolver"
+                android:layout_width="254dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#33FF00"
+                android:text="Volver"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:cornerRadius="16dp" />
+
+            <ImageView
+                android:id="@+id/imgLogoPie"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:contentDescription="Logo Club Deportivo"
+                android:scaleType="fitCenter"
+                android:src="@drawable/logo" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
