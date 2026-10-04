@@ -17,14 +17,12 @@ class AssignActivityActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_assign_activity)
 
-        // Capturar los datos del socio que vienen desde la pantalla anterior
         usuarioNombre = intent.getStringExtra("USUARIO_NOMBRE") ?: ""
         usuarioDni = intent.getStringExtra("USUARIO_DNI") ?: ""
         usuarioId = intent.getStringExtra("USUARIO_ID") ?: ""
 
         val btnVolver = findViewById<Button>(R.id.btnVolver)
 
-        // Mapa relacionando los IDs del XML con las actividades
         val botonesMap = mapOf(
             R.id.btnNatacion to "Natación",
             R.id.btnKarate to "karate",
@@ -61,11 +59,16 @@ class AssignActivityActivity : AppCompatActivity() {
 
     private fun seleccionarActividad(nombreActividad: String) {
 
+        val actividadInfo = DatosClub.listaActividades.find {
+            it.nombre.equals(nombreActividad, ignoreCase = true)
+        }
          val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra("USUARIO_NOMBRE", usuarioNombre)
         intent.putExtra("USUARIO_DNI", usuarioDni)
         intent.putExtra("USUARIO_ID", usuarioId)
         intent.putExtra("ACTIVIDAD_NOMBRE", nombreActividad)
+        intent.putExtra("ACTIVIDAD_HORARIO", actividadInfo?.horario ?: "20:00")
+        intent.putExtra("ACTIVIDAD_PROFESOR", actividadInfo?.profesor ?: "Por Asignar")
         startActivity(intent)
     }
 }

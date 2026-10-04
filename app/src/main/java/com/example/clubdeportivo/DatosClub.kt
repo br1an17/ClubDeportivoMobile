@@ -1,14 +1,16 @@
 package com.example.clubdeportivo
 
-// 1. Modelo para las Actividades del Club
+
 data class Actividad(
     val id: String,
     val nombre: String,
     val costo: Double,
+    val horario: String = "20:00",
+    val profesor: String = "Sin Asignar",
     val iconoResId: Int? = null
 )
 
-// 2. Modelo unificado de Socio/Partner
+
 data class Socio(
     val numeroAfiliado: String,
     val dni: String,
@@ -20,7 +22,7 @@ data class Socio(
     val actividades: MutableList<String> = mutableListOf()
 )
 
-// 3. Modelo de Comprobante
+
 data class DatosComprobante(
     val numero: String,
     val cliente: String,
@@ -33,21 +35,19 @@ data class DatosComprobante(
     val valorCuota: String
 )
 
-// 4. Repositorio Central del Club
 object DatosClub {
 
-    // Lista oficial de Actividades del Club
     val listaActividades = listOf(
-        Actividad("ACT01", "Natación", 12000.0, R.drawable.ic_natacion),
-        Actividad("ACT02", "G. artistica", 10000.0, R.drawable.ic_gim),
-        Actividad("ACT03", "Basquet", 9000.0, R.drawable.ic_basketball),
-        Actividad("ACT04", "Karate", 8500.0, R.drawable.ic_karate),
-        Actividad("ACT05", "Tennis", 18000.0, R.drawable.ic_tennis),
-        Actividad("ACT06", "Fútbol", 15000.0, R.drawable.ic_futbol),
-        Actividad("ACT09", "Voley", 9500.0, R.drawable.ic_voley)
+        Actividad("ACT01", "Natación", 12000.0,"09:00", "Georgina Bardach", R.drawable.ic_natacion),
+        Actividad("ACT02", "G. artistica", 10000.0,"17:00", "Nadia Comaneci",R.drawable.ic_gim),
+        Actividad("ACT03", "Basquet", 9000.0,"19:00", "Manu Ginóbili", R.drawable.ic_basketball),
+        Actividad("ACT04", "Karate", 8500.0, "18:00", "Miyagi Sensei",R.drawable.ic_karate),
+        Actividad("ACT05", "Tennis", 18000.0,"16:00", "Guillermo Coria", R.drawable.ic_tennis),
+        Actividad("ACT06", "Fútbol", 15000.0,"20:00", "Lionel Messi", R.drawable.ic_futbol),
+        Actividad("ACT09", "Voley", 9500.0, "15:00", "Hugo Conte",R.drawable.ic_voley)
     )
 
-    // Lista unificada de Socios
+
     val socios = mutableListOf(
         Socio(
             numeroAfiliado = "001245",
@@ -101,7 +101,6 @@ object DatosClub {
         )
     )
 
-    // Historial de Comprobantes
     val comprobantes = mutableListOf(
         DatosComprobante(
             numero = "001245",
@@ -138,7 +137,6 @@ object DatosClub {
         )
     )
 
-    // Búsqueda centralizada por DNI o N° de Afiliado
     fun buscarSocio(criterio: String): Socio? {
         val busqueda = criterio.trim()
         return socios.find { it.dni == busqueda || it.numeroAfiliado == busqueda }
