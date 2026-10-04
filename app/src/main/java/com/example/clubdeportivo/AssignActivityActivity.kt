@@ -33,7 +33,6 @@ class AssignActivityActivity : AppCompatActivity() {
             R.id.btnVoley to "Voley"
         )
 
-        // Recorrer las actividades de DatosClub y asignar nombre, icono y evento
         for ((btnId, nombreActividad) in botonesMap) {
             val boton = findViewById<MaterialButton>(btnId) ?: continue
             val actividadData = DatosClub.listaActividades.find {
@@ -69,6 +68,7 @@ class AssignActivityActivity : AppCompatActivity() {
         intent.putExtra("ACTIVIDAD_NOMBRE", nombreActividad)
         intent.putExtra("ACTIVIDAD_HORARIO", actividadInfo?.horario ?: "20:00")
         intent.putExtra("ACTIVIDAD_PROFESOR", actividadInfo?.profesor ?: "Por Asignar")
+        intent.putExtra("ACTIVIDAD_VALOR",actividadInfo?.costo?:10000)
         startActivity(intent)
     }
 }
