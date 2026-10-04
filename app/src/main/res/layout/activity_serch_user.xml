@@ -13,11 +13,11 @@ android:fillViewport="true">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:layout_marginBottom="20dp"
         android:text="Buscar Usuario"
         android:textColor="#FFFFFF"
         android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="20dp" />
+        android:textStyle="bold" />
     <TextView
         android:id="@+id/tvSubtitulo"
         android:layout_width="wrap_content"

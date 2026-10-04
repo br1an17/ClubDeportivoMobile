@@ -17,30 +17,17 @@
     <!-- Campo Usuario (con marca de agua/hint que desaparece al escribir) -->
     <EditText
         android:id="@+id/etUsuario"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="28dp"
-        android:background="@drawable/line_bottom_green"
-        android:hint="Usuario"
         android:inputType="text"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#A0A0A0" />
+        android:hint="Usuario"
+        style="@style/Inputs"/>
 
     <!-- Campo Contraseña (con marca de agua/hint que desaparece al escribir) -->
     <EditText
         android:id="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="40dp"
-        android:background="@drawable/line_bottom_green"
         android:hint="Contraseña"
         android:inputType="textPassword"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#A0A0A0" />
+        style="@style/Inputs"
+     />
 
     <!-- Botón Ingresar -->
     <Button

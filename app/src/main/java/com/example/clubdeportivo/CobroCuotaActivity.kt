@@ -76,7 +76,7 @@ class CobroCuotaActivity : AppCompatActivity() {
             )
 
             etMonto.setText(
-                socioSeleccionado!!.cuota
+                socioSeleccionado!!.cuotaMonto
             )
 
         } else {
