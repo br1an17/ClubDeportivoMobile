@@ -7,12 +7,7 @@
 
     <ImageView
         android:id="@+id/imgLogo"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_marginBottom="32dp"
-        android:contentDescription="@string/descriptionLogo"
-        android:scaleType="fitCenter"
-        android:src="@drawable/logo" />
+        style="@style/logoGrande" />
     <!-- 2. Título -->
     <TextView
         android:id="@+id/tvBienvenida"

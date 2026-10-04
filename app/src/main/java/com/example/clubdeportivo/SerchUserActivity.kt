@@ -26,16 +26,15 @@ class SerchUserActivity : AppCompatActivity() {
             if (criterioBusqueda.isEmpty()) {
                 Toast.makeText(this, "Ingrese DNI o N° de Socio para buscar", Toast.LENGTH_SHORT).show()
             } else {
-                val usuarioEncontrado = RepositorioUsuarios.buscarPorDniOSocio(criterioBusqueda)
+                val usuarioEncontrado = DatosClub.buscarSocio(criterioBusqueda)
 
                 if (usuarioEncontrado != null) {
                     Toast.makeText(this, "Usuario encontrado: ${usuarioEncontrado.nombre}", Toast.LENGTH_SHORT).show()
 
-                    // Pasa los datos a ActionsUserActivity
                     val intent = Intent(this, ActionsUserActivity::class.java)
                     intent.putExtra("USUARIO_NOMBRE", "${usuarioEncontrado.nombre} ${usuarioEncontrado.apellido}")
                     intent.putExtra("USUARIO_DNI", usuarioEncontrado.dni)
-                    intent.putExtra("USUARIO_ID", usuarioEncontrado.idSocio)
+                    intent.putExtra("USUARIO_ID", usuarioEncontrado.numeroAfiliado)
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "No se encontró ningún usuario registrado", Toast.LENGTH_LONG).show()
