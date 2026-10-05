@@ -63,7 +63,7 @@ class ActionsUserActivity : AppCompatActivity() {
         btnCarnet.setOnClickListener {
             val intent = Intent(this, CarnetSocioActivity::class.java)
 
-            // Convertimos el booleano estadoCuota a texto
+
             val estadoTexto = if (socio?.cuotaAlDia == true) "Al día" else "Pendiente"
 
             intent.putExtra("NUM_AFILIADO", socio?.numeroAfiliado ?: idRecibido)
