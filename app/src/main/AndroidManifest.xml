@@ -51,6 +51,8 @@
             android:name=".DetailActivity"
             android:exported="false"
         />
+        <activity android:name=".ActivitysAsiggnedActivity"
+            android:exported="false"/>
         <!-- Comprobante -->
         <activity
             android:name=".ComprobantePagoActivity"
@@ -70,6 +72,8 @@
         <activity android:name=".DetalleCuotaVencidaActivity"
             android:exported="false"/>
         <activity android:name=".ListaCuotasVencidaActivity"
+            android:exported="false"/>
+        <activity android:name=".CarnetSocioActivity"
             android:exported="false"/>
 
     </application>
