@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Título superior (Socio Cuota Vencida) -->
+    <TextView
+        android:id="@+id/tvTituloDeudores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="24dp"
+        android:text="Socio Cuota Vencida"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- Contenedor/Lista de botones de socios -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/contenedorSocios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <!-- Botón Socio 1 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSocio1"
+                android:layout_width="317dp"
+                android:layout_height="52dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/GreenQuiet"
+                android:text="juan pablo"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
+
+            <!-- Botón Socio 2 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSocio2"
+                android:layout_width="320dp"
+                android:layout_height="52dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/GreenQuiet"
+                android:text="pablo juan"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
+
+            <!-- Botón Socio 3 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSocio3"
+                android:layout_width="316dp"
+                android:layout_height="52dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/GreenQuiet"
+                android:text="juan pablo"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
+
+            <!-- Botón Socio 4 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSocio4"
+                android:layout_width="320dp"
+                android:layout_height="52dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/GreenQuiet"
+                android:text="pablo juan"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
+
+            <!-- Botón Socio 5 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSocio5"
+                android:layout_width="320dp"
+                android:layout_height="52dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/GreenQuiet"
+                android:text="juan pablo"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
+
+            <!-- Botón Socio 6 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSocio6"
+                android:layout_width="320dp"
+                android:layout_height="52dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/GreenQuiet"
+                android:text="pablo juan"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Botón Menú -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnMenu"
+       style="@style/BotonVolver" />
+
+    <!-- Logo del club en la parte inferior -->
+    <ImageView
+        android:id="@+id/imgLogoDeudores"
+        android:layout_width="160dp"
+        android:layout_height="100dp"
+        android:contentDescription="Logo Club Deportivo"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo" />
+
+</LinearLayout>

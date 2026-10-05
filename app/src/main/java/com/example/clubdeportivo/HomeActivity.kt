@@ -39,6 +39,13 @@ class HomeActivity : AppCompatActivity() {
                 )
                 startActivity(intent)
             }
+            val btnCuotaVencida = findViewById<Button>(R.id.btnVencida)
+
+            btnCuotaVencida.setOnClickListener {
+                val intent = Intent(this, ListaCuotasVencidaActivity::class.java)
+                intent.putExtra("TIPO_FILTRO", "VENCIDA")
+                startActivity(intent)
+            }
 
             val btnSalir = findViewById<Button>(R.id.btnVolver)
 

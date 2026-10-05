@@ -67,6 +67,10 @@
         <activity
             android:name=".SocioCuotaVenceHoyActivity"
             android:exported="false" />
+        <activity android:name=".DetalleCuotaVencidaActivity"
+            android:exported="false"/>
+        <activity android:name=".ListaCuotasVencidaActivity"
+            android:exported="false"/>
 
     </application>
 
