@@ -15,6 +15,7 @@ class ActionsUserActivity : AppCompatActivity() {
         val btnAsignarActividades = findViewById<Button>(R.id.btnAsignarActividades)
         val btnActividadesAsignadas = findViewById<Button>(R.id.btnVerActividades)
 
+        val btnCarnet = findViewById<Button>(R.id.btnCarnet)
         val btnVolver = findViewById<Button>(R.id.btnVolver)
 
         val nombreRecibido = intent.getStringExtra("USUARIO_NOMBRE") ?: "Socio no identificado"
@@ -26,16 +27,6 @@ class ActionsUserActivity : AppCompatActivity() {
             val intent = Intent(
                 this,
                 AssignActivityActivity::class.java
-            )
-            intent.putExtra("USUARIO_NOMBRE", nombreRecibido)
-            intent.putExtra("USUARIO_DNI", dniRecibido)
-            intent.putExtra("USUARIO_ID", idRecibido)
-            startActivity(intent)
-        }
-        btnActividadesAsignadas.setOnClickListener {
-            val intent = Intent(
-                this,
-                ActivitysAsiggnedActivity::class.java
             )
             intent.putExtra("USUARIO_NOMBRE", nombreRecibido)
             intent.putExtra("USUARIO_DNI", dniRecibido)
