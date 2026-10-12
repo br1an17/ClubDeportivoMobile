@@ -1,5 +1,16 @@
 package com.example.clubdeportivo
 
+import kotlin.String
+
+data class Administrador (
+        val nombre: String,
+        val contraseña: String,
+        val dni: String,
+        val mail: String,
+        val tel: String,
+        val activo: Boolean = true
+        )
+
 
 data class Actividad(
     val id: String,
@@ -36,6 +47,14 @@ data class DatosComprobante(
 )
 
 object DatosClub {
+
+
+    val administradores = listOf(
+        Administrador("Brian","12345678","35974xxx","brianzairpaez@gmail.com","116834xxxx",true),
+        Administrador("Hernan","Clave123","xxxxxxxx","@gmail.com","",true),
+        Administrador("Micaela","Michi123","xxxxxxxx","@gmail.com","",true),
+        Administrador("Dora","Dora1234","xxxxxxxx","@gmail.com","",true)
+    )
 
     val listaActividades = listOf(
         Actividad("ACT01", "Natación", 12000.0,"09:00", "Georgina Bardach", R.drawable.ic_natacion),
@@ -141,4 +160,5 @@ object DatosClub {
         val busqueda = criterio.trim()
         return socios.find { it.dni == busqueda || it.numeroAfiliado == busqueda }
     }
+
 }
