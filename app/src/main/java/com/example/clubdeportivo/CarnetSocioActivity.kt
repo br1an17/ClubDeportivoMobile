@@ -31,22 +31,17 @@ class CarnetSocioActivity : AppCompatActivity() {
 
         // 3. Configurar el botón "Volver" para ir al menú principal (HomeActivity)
         btnVolver.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            // Llantas de limpieza para volver al inicio sin acumular pantallas en la pila
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            startActivity(intent)
             finish()
         }
     }
 
     private fun cargarDatosSocio() {
-        // Obtenemos los datos pasados a través del Intent desde la pantalla anterior
         val numAfiliado = intent.getStringExtra("NUM_AFILIADO") ?: "N/A"
         val nombre = intent.getStringExtra("NOMBRE_SOCIO") ?: "Socio No Registrado"
         val documento = intent.getStringExtra("DOCUMENTO_SOCIO") ?: "N/A"
         val estado = intent.getStringExtra("ESTADO_SOCIO") ?: "Inactivo"
 
-        // Asignamos los valores a los TextViews
+
         tvNumAfiliado.text = numAfiliado
         tvNombreSocio.text = nombre
         tvDocumentoSocio.text = documento
