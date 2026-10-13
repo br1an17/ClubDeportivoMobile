@@ -24,7 +24,7 @@ class ActionsUserActivity : AppCompatActivity() {
         val idRecibido = intent.getStringExtra("USUARIO_ID")?:""
         tvNombreSocio.text = nombreRecibido
 
-        val socio = DatosClub.socios.find {
+        val socio = DatosClub.clientes.find {
             (dniRecibido.isNotEmpty() && it.dni == dniRecibido) ||
                     (idRecibido.isNotEmpty() && it.numeroAfiliado == idRecibido) ||
                     (nombreRecibido.isNotEmpty() && it.nombre.equals(nombreRecibido, ignoreCase = true))

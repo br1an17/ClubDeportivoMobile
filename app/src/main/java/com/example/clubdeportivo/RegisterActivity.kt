@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 
 class RegisterActivity : AppCompatActivity() {
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -53,17 +52,89 @@ class RegisterActivity : AppCompatActivity() {
             val nombre = etNombre.text.toString().trim()
             val apellido = etApellido.text.toString().trim()
             val dni = etDni.text.toString().trim()
+            val telefono = etTelefono.toString().trim()
+            val email = etEmail.toString().trim()
 
-            if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty()) {
-                Toast.makeText(this, "Complete los campos obligatorios (Nombre, Apellido, DNI)", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Usuario $nombre $apellido registrado con éxito", Toast.LENGTH_LONG).show()
-                finish() // Regresa tras registrar
+            if(nombre.isEmpty()){
+               etNombre.error = "El nombre es obligatorio"
+               etNombre.requestFocus()
+               return@setOnClickListener
             }
+
+            if(apellido.isEmpty()){
+                etApellido.error = "El apellido es obligatorio"
+                etApellido.requestFocus()
+                return@setOnClickListener
+            }
+
+            if(dni.isEmpty()){
+                etDni.error = "El DNI es obligatorio"
+                etDni.requestFocus()
+                return@setOnClickListener
+            }
+            if (dni.all { it.isDigit() } || dni.length > 6 ){
+                etDni.error ="ingrese un DNI valido"
+                etDni.requestFocus()
+                return@setOnClickListener
+            }
+            if (telefono.isNotEmpty() && !telefono.all { it.isDigit() }) {
+                etTelefono.error = "Ingrese un teléfono válido"
+                etTelefono.requestFocus()
+                return@setOnClickListener
+            }
+            if (email.isNotEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                etEmail.error = "Ingrese un correo electrónico válido"
+                etEmail.requestFocus()
+                return@setOnClickListener
+            }
+            if(!cbSocio.isChecked && !cbNoSocio.isChecked){
+                Toast.makeText(this,"Seleccione si es socio o no socio", Toast.LENGTH_SHORT).show()
+            }
+            registrarCliente(nombre, apellido, dni, telefono, email, cbSocio.isChecked, cbAptoFisico.isChecked)
         }
+
 
         btnVolver.setOnClickListener {
             finish()
         }
+
+    }
+    private fun registrarCliente(
+        nombre: String,
+        apellido: String,
+        dni: String,
+        telefono: String,
+        email: String,
+        esSocio: Boolean,
+        aptoFisico: Boolean){
+        val existe = DatosClub.clientes.any{it.dni ==dni}
+        if (existe){
+            Toast.makeText(this,"Ya existe un Cliente con el DNI $dni" , Toast.LENGTH_LONG).show()
+            return
+        }
+    val prefijo = if (esSocio)"SOC-" else "NS-"
+    val numeroClienteGenerado = prefijo +(DatosClub.clientes.size +1200)
+        val montoCuota = if (esSocio)"150000" else "0"
+
+        val  nuevoCliente = ClienteClub(
+            dni = dni,
+            nombre = nombre,
+            apellido = apellido,
+            telefono = telefono,
+            email = email,
+            esSocio = esSocio,
+            aptoFisico = aptoFisico,
+            numeroAfiliado = numeroClienteGenerado,
+            cuotaAlDia = true,
+            cuotaMonto = montoCuota,
+            vencimiento = "10/11/2026",
+            actividades = mutableListOf()
+        )
+        DatosClub.clientes.add(nuevoCliente)
+
+        val tipoClienteStr = if (esSocio) "Socio" else "No Socio"
+        Toast.makeText(this, "¡$tipoClienteStr $nombre $apellido registrado con éxito!", Toast.LENGTH_LONG).show()
+        finish()
+
     }
 }

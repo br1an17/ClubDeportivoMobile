@@ -139,7 +139,7 @@ class ComprobantePagoActivity : AppCompatActivity() {
                 tvCliente.text.toString()
             )
 
-            val socio = DatosClub.socios.find {
+            val socio = DatosClub.clientes.find {
                 it.nombre.equals(
                     tvCliente.text.toString(),
                     ignoreCase = true

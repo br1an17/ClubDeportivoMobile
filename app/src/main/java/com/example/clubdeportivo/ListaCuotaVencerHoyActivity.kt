@@ -26,7 +26,7 @@ class ListaCuotaVencerHoyActivity : AppCompatActivity() {
     data class ClienteVencimiento(
         val nombre: String,
         val dni: String,
-        val numeroCliente: String
+        val numeroCliente: String?
     )
 
     // =====================================================
@@ -45,7 +45,7 @@ class ListaCuotaVencerHoyActivity : AppCompatActivity() {
     // DATOS CENTRALES DEL PROYECTO
     // =====================================================
 
-    private val clientes = DatosClub.socios.map { socio ->
+    private val clientes = DatosClub.clientes.map { socio ->
 
         ClienteVencimiento(
             nombre = socio.nombre,
@@ -231,8 +231,7 @@ class ListaCuotaVencerHoyActivity : AppCompatActivity() {
                                         cliente.dni
                                             .contains(texto) ||
 
-                                        cliente.numeroCliente
-                                            .contains(texto)
+                                        (cliente.numeroCliente?.contains(texto) ?: false)
                             }
                         }
 
@@ -361,9 +360,7 @@ class ListaCuotaVencerHoyActivity : AppCompatActivity() {
                 totalPaginas
         }
 
-        val inicio =
-            (paginaActual - 1) *
-                    cantidadPorPagina
+        val inicio = (paginaActual - 1) * cantidadPorPagina
 
         val fin = minOf(
             inicio + cantidadPorPagina,

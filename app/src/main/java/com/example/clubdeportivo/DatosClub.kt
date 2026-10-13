@@ -22,14 +22,18 @@ data class Actividad(
 )
 
 
-data class Socio(
-    val numeroAfiliado: String,
+data class ClienteClub(
     val dni: String,
     val nombre: String,
     val apellido: String,
-    val cuotaAlDia: Boolean = true,
-    val cuotaMonto: String = "15000",
-    val vencimiento: String = "10/10/2026",
+    val telefono: String,
+    val email: String,
+    val aptoFisico: Boolean,
+    val esSocio: Boolean,
+    val numeroAfiliado: String? = null,
+    val cuotaMonto: String = "100000.00",
+    val cuotaAlDia: Boolean = false,
+    val vencimiento: String? = null,
     val actividades: MutableList<String> = mutableListOf()
 )
 
@@ -67,54 +71,74 @@ object DatosClub {
     )
 
 
-    val socios = mutableListOf(
-        Socio(
-            numeroAfiliado = "001245",
+    val clientes = mutableListOf(
+        ClienteClub(
             dni = "40123456",
             nombre = "Juan Pablo",
             apellido = "Pérez",
+            telefono = "1144556677",
+            email = "juanpablo@gmail.com",
+            esSocio = true,
+            aptoFisico = true,
+            numeroAfiliado = "001245",
             cuotaAlDia = true,
-            cuotaMonto = "15000",
+            cuotaMonto = "150000.00",
             vencimiento = "02/10/2026",
             actividades = mutableListOf("Fútbol", "Musculación")
         ),
-        Socio(
-            numeroAfiliado = "001246",
+        ClienteClub(
             dni = "38987654",
             nombre = "Pedro",
             apellido = "López",
+            telefono = "1122334455",
+            email = "pedro.lopez@gmail.com",
+            esSocio = true,
+            aptoFisico = true,
+            numeroAfiliado = "001246",
             cuotaAlDia = false,
-            cuotaMonto = "12000",
+            cuotaMonto = "150000.00",
             vencimiento = "02/10/2026",
             actividades = mutableListOf("Natación")
         ),
-        Socio(
-            numeroAfiliado = "001247",
+        ClienteClub(
             dni = "42111222",
             nombre = "María",
             apellido = "Gómez",
+            telefono = "1199887766",
+            email = "maria.gomez@gmail.com",
+            esSocio = true,
+            aptoFisico = true,
+            numeroAfiliado = "001247",
             cuotaAlDia = true,
-            cuotaMonto = "18000",
+            cuotaMonto = "150000.00",
             vencimiento = "05/10/2026",
             actividades = mutableListOf("Tennis", "Yoga")
         ),
-        Socio(
-            numeroAfiliado = "001248",
+        ClienteClub(
             dni = "35444555",
             nombre = "Carlos",
             apellido = "Rodríguez",
+            telefono = "1155443322",
+            email = "carlos.rodriguez@gmail.com",
+            esSocio = true,
+            aptoFisico = true,
+            numeroAfiliado = "001248",
             cuotaAlDia = true,
-            cuotaMonto = "14000",
+            cuotaMonto = "150000.00",
             vencimiento = "15/10/2026",
             actividades = mutableListOf("Paddle")
         ),
-        Socio(
-            numeroAfiliado = "001249",
+        ClienteClub(
             dni = "39888999",
             nombre = "Ana",
             apellido = "Martínez",
+            telefono = "1166778899",
+            email = "ana.martinez@gmail.com",
+            esSocio = true,
+            aptoFisico = false,
+            numeroAfiliado = "001249",
             cuotaAlDia = false,
-            cuotaMonto = "11000",
+            cuotaMonto = "150000.00",
             vencimiento = "28/09/2026",
             actividades = mutableListOf("Pilates")
         )
@@ -156,9 +180,9 @@ object DatosClub {
         )
     )
 
-    fun buscarSocio(criterio: String): Socio? {
+    fun buscarSocio(criterio: String): ClienteClub? {
         val busqueda = criterio.trim()
-        return socios.find { it.dni == busqueda || it.numeroAfiliado == busqueda }
+        return clientes.find { it.dni == busqueda || it.numeroAfiliado == busqueda }
     }
 
 }

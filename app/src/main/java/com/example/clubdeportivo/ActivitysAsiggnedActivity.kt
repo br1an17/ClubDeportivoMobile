@@ -62,7 +62,7 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
         contenedor.removeAllViews()
 
 
-        val socio = DatosClub.socios.find {
+        val socio = DatosClub.clientes.find {
             (usuarioDni.isNotEmpty() && it.dni == usuarioDni) ||
                     (usuarioId.isNotEmpty() && it.numeroAfiliado == usuarioId) ||
                     (usuarioNombre.isNotEmpty() && it.nombre.equals(usuarioNombre, ignoreCase = true))
