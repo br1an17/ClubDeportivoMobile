@@ -52,17 +52,28 @@ class RegisterActivity : AppCompatActivity() {
             val nombre = etNombre.text.toString().trim()
             val apellido = etApellido.text.toString().trim()
             val dni = etDni.text.toString().trim()
-            val telefono = etTelefono.toString().trim()
-            val email = etEmail.toString().trim()
+            val telefono = etTelefono.text.toString().trim()
+            val email = etEmail.text.toString().trim()
 
             if(nombre.isEmpty()){
                etNombre.error = "El nombre es obligatorio"
                etNombre.requestFocus()
                return@setOnClickListener
             }
+            if (nombre.length < 3) {
+                etNombre.error = "El nombre debe tener al menos 3 caracteres"
+                etNombre.requestFocus()
+                return@setOnClickListener
+            }
+
 
             if(apellido.isEmpty()){
                 etApellido.error = "El apellido es obligatorio"
+                etApellido.requestFocus()
+                return@setOnClickListener
+            }
+            if (apellido.length < 3) {
+                etApellido.error = "El apellido debe tener al menos 3 caracteres"
                 etApellido.requestFocus()
                 return@setOnClickListener
             }
@@ -72,11 +83,12 @@ class RegisterActivity : AppCompatActivity() {
                 etDni.requestFocus()
                 return@setOnClickListener
             }
-            if (dni.all { it.isDigit() } || dni.length > 6 ){
+            if (!dni.all { it.isDigit() } || dni.length < 7 || dni.length >9 ){
                 etDni.error ="ingrese un DNI valido"
                 etDni.requestFocus()
                 return@setOnClickListener
             }
+
             if (telefono.isNotEmpty() && !telefono.all { it.isDigit() }) {
                 etTelefono.error = "Ingrese un teléfono válido"
                 etTelefono.requestFocus()
@@ -89,6 +101,7 @@ class RegisterActivity : AppCompatActivity() {
             }
             if(!cbSocio.isChecked && !cbNoSocio.isChecked){
                 Toast.makeText(this,"Seleccione si es socio o no socio", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
             registrarCliente(nombre, apellido, dni, telefono, email, cbSocio.isChecked, cbAptoFisico.isChecked)
         }
