@@ -16,7 +16,7 @@ class CobroCuotaActivity : AppCompatActivity() {
     private var medioPago = ""
 
     // Socio seleccionado desde DatosClub
-    private var socioSeleccionado: Socio? = null
+    private var socioSeleccionado: ClienteClub? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +47,7 @@ class CobroCuotaActivity : AppCompatActivity() {
         // BUSCAR EL SOCIO EN DATOSCLUB
         // =====================================================
 
-        socioSeleccionado = DatosClub.socios.find { socio ->
+        socioSeleccionado = DatosClub.clientes.find { socio ->
 
             if (!dniUsuario.isNullOrEmpty()) {
                 socio.dni == dniUsuario
@@ -113,7 +113,7 @@ class CobroCuotaActivity : AppCompatActivity() {
             medioPago = "Tarjeta"
 
             val posicionSocio =
-                DatosClub.socios.indexOfFirst { socio ->
+                DatosClub.clientes.indexOfFirst { socio ->
                     socio.dni == etDni.text.toString().trim()
                 }
 
@@ -236,7 +236,7 @@ class CobroCuotaActivity : AppCompatActivity() {
         // =====================================================
 
         val posicionSocio =
-            DatosClub.socios.indexOfFirst { socio ->
+            DatosClub.clientes.indexOfFirst { socio ->
 
                 socio.dni == dni
             }

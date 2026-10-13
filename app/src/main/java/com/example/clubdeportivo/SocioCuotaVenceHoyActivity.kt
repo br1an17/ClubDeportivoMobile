@@ -33,7 +33,7 @@ class SocioCuotaVenceHoyActivity : AppCompatActivity() {
 
         // Buscamos ese socio en el array central.
         val socio = if (afiliadoRecibido != null) {
-            DatosClub.socios.find {
+            DatosClub.clientes.find {
                 it.numeroAfiliado == afiliadoRecibido
             }
         } else {
@@ -42,7 +42,7 @@ class SocioCuotaVenceHoyActivity : AppCompatActivity() {
 
         // Si encontramos el socio usamos sus datos.
         // Si no, usamos el primer socio del array como prueba.
-        val socioSeleccionado = socio ?: DatosClub.socios[0]
+        val socioSeleccionado = socio ?: DatosClub.clientes[0]
 
         // =====================================================
         // MOSTRAR DATOS

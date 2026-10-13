@@ -30,7 +30,7 @@ class ListaCuotasVencidaActivity : AppCompatActivity() {
         contenedor.removeAllViews()
 
         // Podés filtrar de DatosClub o mostrar la lista de socios
-        val sociosLista = DatosClub.socios
+        val sociosLista = DatosClub.clientes
 
         for (socio in sociosLista) {
             val botonSocio = MaterialButton(this).apply {
