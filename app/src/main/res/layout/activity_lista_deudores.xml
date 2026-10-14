@@ -28,6 +28,7 @@
         android:fillViewport="true">
 
         <LinearLayout
+            android:id="@+id/contenedorSocios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -39,7 +40,7 @@
                 android:layout_width="317dp"
                 android:layout_height="52dp"
                 android:layout_marginBottom="12dp"
-                android:backgroundTint="@color/Greenquiet"
+                android:backgroundTint="@color/GreenQuiet"
                 android:text="juan pablo"
                 android:textAllCaps="false"
                 android:textColor="#000000"
@@ -53,7 +54,7 @@
                 android:layout_width="320dp"
                 android:layout_height="52dp"
                 android:layout_marginBottom="12dp"
-                android:backgroundTint="@color/Greenquiet"
+                android:backgroundTint="@color/GreenQuiet"
                 android:text="pablo juan"
                 android:textAllCaps="false"
                 android:textColor="#000000"
@@ -67,7 +68,7 @@
                 android:layout_width="316dp"
                 android:layout_height="52dp"
                 android:layout_marginBottom="12dp"
-                android:backgroundTint="@color/Greenquiet"
+                android:backgroundTint="@color/GreenQuiet"
                 android:text="juan pablo"
                 android:textAllCaps="false"
                 android:textColor="#000000"
@@ -81,7 +82,7 @@
                 android:layout_width="320dp"
                 android:layout_height="52dp"
                 android:layout_marginBottom="12dp"
-                android:backgroundTint="@color/Greenquiet"
+                android:backgroundTint="@color/GreenQuiet"
                 android:text="pablo juan"
                 android:textAllCaps="false"
                 android:textColor="#000000"
@@ -95,7 +96,7 @@
                 android:layout_width="320dp"
                 android:layout_height="52dp"
                 android:layout_marginBottom="12dp"
-                android:backgroundTint="@color/Greenquiet"
+                android:backgroundTint="@color/GreenQuiet"
                 android:text="juan pablo"
                 android:textAllCaps="false"
                 android:textColor="#000000"
@@ -109,7 +110,7 @@
                 android:layout_width="320dp"
                 android:layout_height="52dp"
                 android:layout_marginBottom="12dp"
-                android:backgroundTint="@color/Greenquiet"
+                android:backgroundTint="@color/GreenQuiet"
                 android:text="pablo juan"
                 android:textAllCaps="false"
                 android:textColor="#000000"
@@ -123,17 +124,7 @@
     <!-- Botón Menú -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnMenu"
-        android:layout_width="220dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/Greenquiet"
-        android:text="Menú"
-        android:textAllCaps="false"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:cornerRadius="16dp" />
+       style="@style/BotonVolver" />
 
     <!-- Logo del club en la parte inferior -->
     <ImageView

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="8dp">
+
+        <!-- TÍTULO -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Socio Cuota Vence Hoy"
+            android:textColor="@color/white"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="4dp" />
+
+        <!-- ALERTA -->
+        <ImageView
+            android:id="@+id/imgAlerta"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/alerta"
+            android:contentDescription="Alerta"
+            android:scaleType="fitCenter"
+            android:layout_marginBottom="6dp" />
+
+        <!-- NOMBRE -->
+        <TextView
+            android:layout_width="255dp"
+            android:layout_height="wrap_content"
+            android:text="Nombre"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="3dp" />
+
+        <EditText
+            android:id="@+id/etNombre"
+            android:layout_width="255dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_input"
+            android:hint="Nombre del socio"
+            android:inputType="textPersonName"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:focusable="false"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:layout_marginBottom="3dp" />
+
+        <!-- AFILIADO -->
+        <TextView
+            android:layout_width="255dp"
+            android:layout_height="wrap_content"
+            android:text="N.º de Afiliado"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="3dp" />
+
+        <EditText
+            android:id="@+id/etAfiliado"
+            android:layout_width="255dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_input"
+            android:hint="Número de afiliado"
+            android:inputType="number"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:focusable="false"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:layout_marginBottom="14dp" />
+
+        <!-- CARTEL DE ALERTA -->
+        <LinearLayout
+            android:layout_width="255dp"
+            android:layout_height="88dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:background="@drawable/bg_alerta"
+            android:layout_marginBottom="24dp">
+
+            <ImageView
+                android:id="@+id/imgCalendario"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:src="@drawable/calendario"
+                android:contentDescription="Calendario"
+                android:scaleType="fitCenter"
+                android:layout_marginEnd="6dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="La cuota vence hoy"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginBottom="5dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Debe regularizar su situación para continuar utilizando los beneficios del club"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- COBRAR CUOTA -->
+        <Button
+            android:id="@+id/btnCobrarCuota"
+            android:layout_width="240dp"
+            android:layout_height="46dp"
+            android:backgroundTint="@color/GreenStrong"
+            android:text="Cobrar Cuota"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:layout_marginBottom="48dp" />
+
+        <!-- ENVIAR ALERTA -->
+        <Button
+            android:id="@+id/btnEnviarAlerta"
+            android:layout_width="240dp"
+            android:layout_height="46dp"
+            android:backgroundTint="@color/GreenStrong"
+            android:text="Enviar Alerta"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:layout_marginBottom="48dp" />
+
+        <!-- VOLVER -->
+        <Button
+            android:id="@+id/btnVolver"
+            android:layout_width="240dp"
+            android:layout_height="46dp"
+            android:backgroundTint="@color/GreenStrong"
+            android:text="Volver"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:layout_marginBottom="12dp" />
+
+        <!-- LOGO -->
+        <ImageView
+            android:id="@+id/imgLogoSocioVence"
+            android:layout_width="145dp"
+            android:layout_height="75dp"
+            android:src="@drawable/logo"
+            android:contentDescription="Logo Club"
+            android:scaleType="fitCenter" />
+
+    </LinearLayout>
+
+</ScrollView>

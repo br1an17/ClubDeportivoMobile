@@ -6,22 +6,17 @@
     android:fillViewport="true">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center_horizontal">
+        style="@style/MarcoGeneralPantalla">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Registrar Usuario:"
             android:layout_marginTop="50dp"
+            android:layout_marginBottom="20dp"
+            android:text="Registrar Usuario:"
             android:textColor="#FFFFFF"
             android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp" />
-
+            android:textStyle="bold" />
 
 
         <EditText
@@ -35,7 +30,7 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:textColor="#FFFFFF"
-            android:textColorHint="@color/white"/>
+            android:textColorHint="@color/white" />
 
         <!-- Apellido -->
         <EditText
@@ -49,7 +44,7 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:textColor="#FFFFFF"
-            android:textColorHint="@color/white"/>
+            android:textColorHint="@color/white" />
 
         <!-- DNI -->
 
@@ -64,7 +59,7 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:textColor="#FFFFFF"
-            android:textColorHint="@color/white"/>
+            android:textColorHint="@color/white" />
 
         <!-- Teléfono -->
 
@@ -80,7 +75,7 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:textColor="#FFFFFF"
-            android:textColorHint="@color/white"/>
+            android:textColorHint="@color/white" />
 
         <!-- E-mail -->
 
@@ -101,9 +96,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginBottom="12dp"
             android:gravity="center"
-            android:layout_marginBottom="12dp">
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/cbSocio"
@@ -128,18 +123,18 @@
             android:id="@+id/cbAptoFisico"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:text="Apto Físico"
             android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp" />
+            android:textStyle="bold" />
 
         <!-- Botones Registrar y Limpiar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
-            android:layout_marginBottom="20dp">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnRegistrar"
@@ -164,12 +159,8 @@
         <!-- Botón Menú / Volver -->
         <Button
             android:id="@+id/btnVolver"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/GreenStrong"
-            android:text="Volver"
-            android:textColor="#000000"
-            android:textStyle="bold" />
+            style="@style/BotonVolver" />
+
         <ImageView
             android:id="@+id/imgLogoLogin"
             android:layout_width="160dp"

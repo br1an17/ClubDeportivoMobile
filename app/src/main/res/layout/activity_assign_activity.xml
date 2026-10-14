@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MarcoGeneralPantalla">
+
+    <!-- Título Principal -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Asignar Actividad"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="Seleccione una actividad"
+        android:textColor="#A0A0A0"
+        android:textSize="14sp" />
+
+    <!-- ScrollView para permitir el desplazamiento en 1 sola columna -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <!-- Botón Natación -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNatacion"
+                android:layout_width="260dp"
+                android:layout_height="54dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/GreenStrong"
+                android:text="Natación"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_natacion"
+                app:iconGravity="textStart"
+                app:iconPadding="12dp"
+                app:iconTint="#000000" />
+
+            <!-- Botón Aquagym -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnKarate"
+                android:layout_width="260dp"
+                android:layout_height="54dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/GreenStrong"
+                android:text="karate"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_karate"
+                app:iconGravity="textStart"
+                app:iconPadding="12dp"
+                app:iconTint="#000000" />
+
+
+
+            <!-- Botón Tennis -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTennis"
+                android:layout_width="260dp"
+                android:layout_height="54dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/GreenStrong"
+                android:text="Tennis"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_tennis"
+                app:iconGravity="textStart"
+                app:iconPadding="12dp"
+                app:iconTint="#000000" />
+
+            <!-- Botón Fútbol -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFutbol"
+                android:layout_width="260dp"
+                android:layout_height="54dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/GreenStrong"
+                android:text="Fútbol"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_futbol"
+                app:iconGravity="textStart"
+                app:iconPadding="12dp"
+                app:iconTint="#000000" />
+
+            <!-- Botón Paddle -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGArtistica"
+                android:layout_width="260dp"
+                android:layout_height="54dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/GreenStrong"
+                android:text="G. artistica"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_gim"
+                app:iconGravity="textStart"
+                app:iconPadding="12dp"
+                app:iconTint="#000000" />
+
+            <!-- Botón Pilates -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnbBasquet"
+                android:layout_width="260dp"
+                android:layout_height="54dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/GreenStrong"
+                android:text="Basquet"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_basketball"
+                app:iconGravity="textStart"
+                app:iconPadding="12dp"
+                app:iconTint="#000000" />
+
+            <!-- Botón Voley -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVoley"
+                android:layout_width="260dp"
+                android:layout_height="54dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/GreenStrong"
+                android:text="Voley"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_voley"
+                app:iconGravity="textStart"
+                app:iconPadding="12dp"
+                app:iconTint="#000000" />
+
+        </LinearLayout>
+    </ScrollView>
+    <!-- Botón Volver estándar -->
+    <Button
+        android:id="@+id/btnVolver"
+        style="@style/BotonVolver"/>
+
+    <!-- Logo del club en la parte inferior -->
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="Logo Club"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo" />
+
+</LinearLayout>

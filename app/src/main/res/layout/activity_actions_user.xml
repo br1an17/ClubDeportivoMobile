@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MarcoGeneralPantalla"
+    >
+
+    <TextView
+        android:id="@+id/tvUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:text="El usuario es:"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <!-- 3. Subtítulo -->
+    <TextView
+        android:id="@+id/tvNombreSocio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:text="nombre"
+        android:textColor="#DEDDDD"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/btnAsignarActividades"
+        style="@style/BotonMenu"
+        android:text="Asignar actividades"
+         />
+
+    <Button
+        android:id="@+id/btnVerActividades"
+        style="@style/BotonMenu"
+        android:text="Actividades asignadas"
+        />
+    <Button
+        android:id="@+id/btnCarnet"
+        style="@style/BotonMenu"
+        android:text="Carnet"
+        />
+    <Button
+        android:id="@+id/btnCobrarCuota"
+        style="@style/BotonMenu"
+        android:text="Cobrar Cuota"
+         />
+
+
+
+    <Button
+        android:id="@+id/btnVolver"
+        style="@style/BotonVolver"/>
+
+
+    <ImageView
+        android:id="@+id/imgLogoLogin"
+        android:layout_width="160dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="Logo Club"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo" />
+
+</LinearLayout>

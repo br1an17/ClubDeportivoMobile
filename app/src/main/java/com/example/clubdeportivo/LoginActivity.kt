@@ -6,17 +6,16 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
+
 class LoginActivity:AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val usuario = "Usuario"
-        val password = "Clave123"
         val campoUsuario = findViewById<EditText>(R.id.etUsuario)
         val campoPassword = findViewById<EditText>(R.id.etPassword)
         val btnIngresar = findViewById<Button>(R.id.btnIngresarLogin)
-        val btnSalir = findViewById<Button>(R.id.btnSalir)
+        val btnVolver = findViewById<Button>(R.id.btnVolver)
 
 
         btnIngresar.setOnClickListener {
@@ -28,12 +27,16 @@ class LoginActivity:AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (usuarioIngresado == usuario && contrasenaIngresada == password) {
-                Toast.makeText(this, "Bienvenido $usuarioIngresado", Toast.LENGTH_SHORT).show()
+            val adminEncontrado = DatosClub.administradores.find { admin ->
+                admin.nombre.equals(usuarioIngresado, ignoreCase = true) &&
+                        admin.contraseña == contrasenaIngresada
+            }
 
+            if (adminEncontrado != null) {
+                Toast.makeText(this, "Bienvenido/a ${adminEncontrado.nombre}", Toast.LENGTH_SHORT).show()
 
                 val intent = Intent(this, HomeActivity::class.java)
-                intent.putExtra("USUARIO_NOMBRE", usuarioIngresado)
+                intent.putExtra("USUARIO_NOMBRE", adminEncontrado.nombre)
                 startActivity(intent)
                 finish()
             } else {
@@ -41,7 +44,7 @@ class LoginActivity:AppCompatActivity() {
             }
         }
 
-        btnSalir.setOnClickListener {
+        btnVolver.setOnClickListener {
             finish()
         }
     }
