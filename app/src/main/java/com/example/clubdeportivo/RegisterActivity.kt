@@ -1,14 +1,21 @@
 package com.example.clubdeportivo
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class RegisterActivity : AppCompatActivity() {
+
+    // Variables globales para el manejo de la foto del apto físico
+    private var fotoAptoFisico: android.graphics.Bitmap? = null
+    private val REQUEST_IMAGE_CAPTURE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +29,8 @@ class RegisterActivity : AppCompatActivity() {
 
         val cbSocio = findViewById<CheckBox>(R.id.cbSocio)
         val cbNoSocio = findViewById<CheckBox>(R.id.cbNoSocio)
-        val cbAptoFisico = findViewById<CheckBox>(R.id.cbAptoFisico)
+        val btnCapturarApto = findViewById<Button>(R.id.btncamara)
+        val tvEstadoApto = findViewById<TextView>(R.id.tvEstadoApto)
 
         val btnRegistrar = findViewById<Button>(R.id.btnRegistrar)
         val btnLimpiar = findViewById<Button>(R.id.btnLimpiar)
@@ -44,9 +52,17 @@ class RegisterActivity : AppCompatActivity() {
             etEmail.text.clear()
             cbSocio.isChecked = false
             cbNoSocio.isChecked = false
-            cbAptoFisico.isChecked = false
+            fotoAptoFisico = null
+            tvEstadoApto.text = "X Sin apto físico"
+            tvEstadoApto.setTextColor(android.graphics.Color.parseColor("#FF5252"))
         }
+        btnCapturarApto.setOnClickListener {
+            // Creamos el Intent pidiéndole al sistema que abra la cámara
+            val intentCamara = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
+            // Lanzamos la cámara esperando un resultado de vuelta (el ticket 1)
+            startActivityForResult(intentCamara, REQUEST_IMAGE_CAPTURE)
+        }
 
         btnRegistrar.setOnClickListener {
             val nombre = etNombre.text.toString().trim()
@@ -103,7 +119,12 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this,"Seleccione si es socio o no socio", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            registrarCliente(nombre, apellido, dni, telefono, email, cbSocio.isChecked, cbAptoFisico.isChecked)
+            if (fotoAptoFisico == null) {
+                Toast.makeText(this, "Debe tomar la foto del apto físico", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val aptoFisico = fotoAptoFisico != null
+            registrarCliente(nombre, apellido, dni, telefono, email, cbSocio.isChecked, aptoFisico)
         }
 
 
@@ -111,6 +132,24 @@ class RegisterActivity : AppCompatActivity() {
             finish()
         }
 
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        val tvEstadoApto = findViewById<TextView>(R.id.tvEstadoApto)
+
+        // Verificamos que la respuesta sea la de nuestra cámara (ticket 1) y que haya salido bien (RESULT_OK)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            // Obtenemos la foto en formato Bitmap desde los datos que nos devolvió el sistema
+            val extras = data?.extras
+            fotoAptoFisico = extras?.get("data") as? android.graphics.Bitmap
+
+            // Si la foto llegó correctamente, actualizamos el texto indicador a verde
+            if (fotoAptoFisico != null) {
+                tvEstadoApto.text = "✔️ Apto físico cargado"
+                tvEstadoApto.setTextColor(android.graphics.Color.parseColor("#4CAF50")) // Verde éxito
+            }
+        }
     }
     private fun registrarCliente(
         nombre: String,
@@ -120,7 +159,7 @@ class RegisterActivity : AppCompatActivity() {
         email: String,
         esSocio: Boolean,
         aptoFisico: Boolean){
-        val existe = DatosClub.clientes.any{it.dni ==dni}
+        val existe = DatosClub.clientes.any{it.dni == dni }
         if (existe){
             Toast.makeText(this,"Ya existe un Cliente con el DNI $dni" , Toast.LENGTH_LONG).show()
             return
