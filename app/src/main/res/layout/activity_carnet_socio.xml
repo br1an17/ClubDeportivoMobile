@@ -160,6 +160,11 @@
         <Button
             android:id="@+id/btnVolver"
             style="@style/BotonVolver" />
+        <!-- Botón Enviar carnet -->
+        <Button
+            android:id="@+id/btnEnviarMail"
+            android:text="Enviar carnet"
+            style="@style/BotonVolver" />
 
     </LinearLayout>
 </ScrollView>
