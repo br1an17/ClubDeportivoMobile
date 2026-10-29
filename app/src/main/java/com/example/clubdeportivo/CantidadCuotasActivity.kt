@@ -105,35 +105,6 @@ class CantidadCuotasActivity : AppCompatActivity() {
         // =====================================================
 
         btnVolver.setOnClickListener {
-
-            val intent = Intent(
-                this,
-                CobroCuotaActivity::class.java
-            )
-
-            // Mantener el socio seleccionado
-            val nombreUsuario =
-                intent.getStringExtra("USUARIO_NOMBRE")
-
-            val dniUsuario =
-                intent.getStringExtra("USUARIO_DNI")
-
-            if (nombreUsuario != null) {
-                intent.putExtra(
-                    "USUARIO_NOMBRE",
-                    nombreUsuario
-                )
-            }
-
-            if (dniUsuario != null) {
-                intent.putExtra(
-                    "USUARIO_DNI",
-                    dniUsuario
-                )
-            }
-
-            startActivity(intent)
-
             finish()
         }
     }
@@ -237,6 +208,9 @@ class CantidadCuotasActivity : AppCompatActivity() {
 
         val comprobante =
             DatosClub.comprobantes[posicionComprobante]
+        val montoParaMostrar =
+            this.intent.getStringExtra("MONTO")
+                ?: comprobante.monto
 
         // =====================================================
         // ABRIR COMPROBANTE
@@ -293,7 +267,7 @@ class CantidadCuotasActivity : AppCompatActivity() {
 
         intent.putExtra(
             "MONTO",
-            comprobante.monto
+            montoParaMostrar
         )
 
         startActivity(intent)

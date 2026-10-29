@@ -56,6 +56,10 @@ class ComprobantePagoActivity : AppCompatActivity() {
         val comprobante =
             DatosClub.comprobantes[indiceSeguro]
 
+        val montoParaMostrar =
+            intent.getStringExtra("MONTO")
+                ?: comprobante.monto
+
         // =====================================================
         // MOSTRAR DATOS
         // =====================================================
@@ -65,7 +69,7 @@ class ComprobantePagoActivity : AppCompatActivity() {
         tvTipo.text = comprobante.tipo
         tvConcepto.text = comprobante.concepto
         tvActividades.text = comprobante.actividades
-        tvMonto.text = comprobante.monto
+        tvMonto.text = montoParaMostrar
         tvFormaPago.text = comprobante.formaPago
         tvCuotas.text = comprobante.cuotas
         tvValorCuota.text = comprobante.valorCuota
@@ -97,7 +101,7 @@ class ComprobantePagoActivity : AppCompatActivity() {
                 cuotasSeleccionadas.toString()
 
             val montoNumero =
-                comprobante.monto.toDoubleOrNull()
+                montoParaMostrar.toDoubleOrNull()
 
             if (montoNumero != null) {
 
@@ -128,34 +132,15 @@ class ComprobantePagoActivity : AppCompatActivity() {
 
         btnVolver.setOnClickListener {
 
-            val intent = Intent(
+            val regreso = Intent(
                 this,
                 CobroCuotaActivity::class.java
-            )
-
-            // Mantener los datos del socio
-            intent.putExtra(
-                "USUARIO_NOMBRE",
-                tvCliente.text.toString()
-            )
-
-            val socio = DatosClub.clientes.find {
-                it.nombre.equals(
-                    tvCliente.text.toString(),
-                    ignoreCase = true
-                )
+            ).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
             }
 
-            if (socio != null) {
-                intent.putExtra(
-                    "USUARIO_DNI",
-                    socio.dni
-                )
-            }
-
-            startActivity(intent)
-
-            finish()
+            startActivity(regreso)
         }
     }
 }

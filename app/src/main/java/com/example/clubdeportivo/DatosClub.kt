@@ -55,7 +55,7 @@ object DatosClub {
 
     val administradores = listOf(
         Administrador("Brian","12345678","35974xxx","brianzairpaez@gmail.com","116834xxxx",true),
-        Administrador("Hernan","Clave123","xxxxxxxx","@gmail.com","",true),
+        Administrador("Hernan","Clave123","4444xxxxx","herna.schwindt1@gmail.com","",true),
         Administrador("Micaela","Michi123","xxxxxxxx","@gmail.com","",true),
         Administrador("Dora","Dora1234","xxxxxxxx","@gmail.com","",true)
     )

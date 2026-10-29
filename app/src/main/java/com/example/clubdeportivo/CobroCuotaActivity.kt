@@ -150,6 +150,10 @@ class CobroCuotaActivity : AppCompatActivity() {
                 "FORMA_PAGO",
                 "Tarjeta"
             )
+            intent.putExtra(
+                "MONTO",
+                etMonto.text.toString().trim()
+            )
 
             startActivity(intent)
         }
