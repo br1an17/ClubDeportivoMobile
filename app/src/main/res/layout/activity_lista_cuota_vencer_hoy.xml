@@ -9,8 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:padding="32dp">
 
         <!-- Título -->
@@ -35,27 +35,27 @@
             android:inputType="text"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
+            android:singleLine="true"
             android:textColor="@color/black"
             android:textColorHint="#666666"
-            android:textSize="14sp"
-            android:singleLine="true" />
+            android:textSize="14sp" />
 
         <!-- Cantidad por página -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginBottom="20dp"
             android:gravity="center_vertical"
-            android:layout_marginBottom="20dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
                 android:text="Mostrar:"
                 android:textColor="#FFFFFF"
                 android:textSize="15sp"
-                android:textStyle="bold"
-                android:layout_marginEnd="10dp" />
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/spLimite"
@@ -66,10 +66,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="por página"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                android:layout_marginStart="10dp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -84,10 +84,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
             android:layout_marginTop="14dp"
-            android:layout_marginBottom="22dp">
+            android:layout_marginBottom="22dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnAnterior"
@@ -95,10 +95,10 @@
                 android:layout_height="48dp"
                 android:backgroundTint="@color/GreenStrong"
                 android:text="Anterior"
+                android:textAllCaps="false"
                 android:textColor="@color/black"
                 android:textSize="13sp"
-                android:textStyle="bold"
-                android:textAllCaps="false" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvPagina"
@@ -117,34 +117,21 @@
                 android:layout_height="48dp"
                 android:backgroundTint="@color/GreenStrong"
                 android:text="Siguiente"
+                android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textAllCaps="false" />
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
         <!-- Botón Menú -->
         <Button
             android:id="@+id/btnMenu"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="24dp"
-            android:backgroundTint="@color/GreenStrong"
-            android:text="Menú"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textAllCaps="false" />
+            style="@style/BotonVolver" />
 
         <!-- Logo -->
         <ImageView
-            android:id="@+id/imgLogoListaCuota"
-            android:layout_width="160dp"
-            android:layout_height="120dp"
-            android:contentDescription="Logo Club"
-            android:scaleType="fitCenter"
-            android:src="@drawable/logo" />
+            style="@style/logoMediano" />
 
     </LinearLayout>
 
