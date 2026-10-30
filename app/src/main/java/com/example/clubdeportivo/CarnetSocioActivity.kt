@@ -20,7 +20,6 @@ class CarnetSocioActivity : AppCompatActivity() {
     private lateinit var tvDocumentoSocio: TextView
     private lateinit var tvEstadoSocio: TextView
     private lateinit var ivCodigoQR: ImageView
-
     private var bitmapQRGlobal: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,15 +36,18 @@ class CarnetSocioActivity : AppCompatActivity() {
 
          val btnVolver = findViewById<Button>(R.id.btnVolver)
          val btnEnviarMail = findViewById<Button>(R.id.btnEnviarMail)
-
+         val emailSocio = intent.getStringExtra("EMAIL_SOCIO") ?: ""
         // 2. Cargar los datos recibidos del socio
         cargarDatosSocio()
 
         btnEnviarMail.setOnClickListener {
-            val emailSocio = "correo_del_socio@gmail.com"
-            val nombreSocio = tvNombreSocio.text.toString()
 
-            EmailHelper.enviarCarnet(this, emailSocio, nombreSocio, bitmapQRGlobal)
+            val nombreSocio = tvNombreSocio.text.toString()
+            val numAfiliado = tvNumAfiliado.text.toString()
+            val documento = tvDocumentoSocio.text.toString()
+            val estado = tvEstadoSocio.text.toString()
+
+            EmailHelper.enviarCarnet(this, emailSocio, nombreSocio, numAfiliado, documento, estado,bitmapQRGlobal)
         }
 
         // 3. Configurar el botón "Volver" para ir al menú principal (HomeActivity)
@@ -76,7 +78,7 @@ class CarnetSocioActivity : AppCompatActivity() {
         Vencimiento: 28/11/2026
     """.trimIndent()
 
-        val bitmapQRGlobal = generarCodigoQR(textoParaQR)
+        bitmapQRGlobal = generarCodigoQR(textoParaQR)
 
 
         if (bitmapQRGlobal != null) {
