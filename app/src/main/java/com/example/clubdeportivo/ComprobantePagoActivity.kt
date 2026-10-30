@@ -1,5 +1,6 @@
 package com.example.clubdeportivo
 
+import java.util.Locale
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -35,78 +36,113 @@ class ComprobantePagoActivity : AppCompatActivity() {
         // OBTENER LA POSICIÓN DEL COMPROBANTE
         // =====================================================
 
+        val dniUsuario =
+            intent.getStringExtra("USUARIO_DNI").orEmpty()
+
+        val socio = DatosClub.clientes.firstOrNull {
+            it.dni == dniUsuario
+        }
+
         val posicion = intent.getIntExtra(
             "POSICION_COMPROBANTE",
-            0
+            -1
         )
 
-        // Verificamos que la posición exista
-        val indiceSeguro = if (
-            posicion in DatosClub.comprobantes.indices
-        ) {
-            posicion
+        val comprobanteBase =
+            DatosClub.comprobantes.getOrNull(posicion)
+
+        val numeroBase = if (socio != null) {
+            socio.numeroAfiliado ?: "S/N"
         } else {
-            0
+            comprobanteBase?.numero ?: "S/N"
         }
 
-        // =====================================================
-        // OBTENER COMPROBANTE DESDE DATOSCLUB
-        // =====================================================
-
-        val comprobante =
-            DatosClub.comprobantes[indiceSeguro]
-
-        // =====================================================
-        // MOSTRAR DATOS
-        // =====================================================
-
-        tvNumero.text = comprobante.numero
-        tvCliente.text = comprobante.cliente
-        tvTipo.text = comprobante.tipo
-        tvConcepto.text = comprobante.concepto
-        tvActividades.text = comprobante.actividades
-        tvMonto.text = comprobante.monto
-        tvFormaPago.text = comprobante.formaPago
-        tvCuotas.text = comprobante.cuotas
-        tvValorCuota.text = comprobante.valorCuota
-
-        // =====================================================
-        // FORMA DE PAGO RECIBIDA
-        // =====================================================
-
-        val formaPagoRecibida =
-            intent.getStringExtra("FORMA_PAGO")
-
-        if (formaPagoRecibida != null) {
-            tvFormaPago.text = formaPagoRecibida
+        val clienteBase = if (socio != null) {
+            "${socio.nombre} ${socio.apellido}"
+        } else {
+            comprobanteBase?.cliente
+                ?: intent.getStringExtra("USUARIO_NOMBRE").orEmpty()
         }
 
-        // =====================================================
-        // CUOTAS RECIBIDAS
-        // =====================================================
+        val tipoBase = if (socio != null) {
+            if (socio.esSocio) "Cuota" else "Actividades"
+        } else {
+            comprobanteBase?.tipo ?: "Cuota"
+        }
 
-        val cuotasSeleccionadas =
-            intent.getIntExtra(
-                "CUOTAS_SELECCIONADAS",
-                0
-            )
+        val conceptoBase = if (socio != null) {
+            if (socio.esSocio) "Cuota mensual" else "Pago de actividades"
+        } else {
+            comprobanteBase?.concepto ?: "Cuota mensual"
+        }
 
-        if (cuotasSeleccionadas > 0) {
+        val actividadesBase = if (socio != null) {
+            socio.actividades.joinToString(", ")
+        } else {
+            comprobanteBase?.actividades.orEmpty()
+        }
 
-            tvCuotas.text =
-                cuotasSeleccionadas.toString()
+        val montoCalculado = socio
+            ?.let { DatosClub.calcularTotalActividades(it) }
+            ?.let { String.format(Locale.US, "%.2f", it) }
 
-            val montoNumero =
-                comprobante.monto.toDoubleOrNull()
+        val montoBase = if (socio != null) {
+            montoCalculado ?: "0.00"
+        } else {
+            comprobanteBase?.monto ?: "0.00"
+        }
 
-            if (montoNumero != null) {
+        val numero = intent.getStringExtra("NUMERO")
+            ?.takeIf { it.isNotBlank() } ?: numeroBase
 
-                val valorCuota =
-                    montoNumero / cuotasSeleccionadas
+        val cliente = intent.getStringExtra("CLIENTE")
+            ?.takeIf { it.isNotBlank() } ?: clienteBase
 
-                tvValorCuota.text =
-                    String.format("%.2f", valorCuota)
+        val tipo = intent.getStringExtra("TIPO")
+            ?.takeIf { it.isNotBlank() } ?: tipoBase
+
+        val concepto = intent.getStringExtra("CONCEPTO")
+            ?.takeIf { it.isNotBlank() } ?: conceptoBase
+
+        val actividades = intent.getStringExtra("ACTIVIDADES")
+            ?.takeIf { it.isNotBlank() }
+            ?: actividadesBase.ifBlank { "Sin actividades asignadas" }
+
+        val monto = intent.getStringExtra("MONTO")
+            ?.takeIf { it.isNotBlank() } ?: montoBase
+
+        val formaPago = intent.getStringExtra("FORMA_PAGO")
+            ?.takeIf { it.isNotBlank() }
+            ?: if (socio == null) {
+                comprobanteBase?.formaPago ?: "No seleccionado"
+            } else {
+                "No seleccionado"
             }
+
+        val cuotasSeleccionadas = intent.getIntExtra(
+            "CUOTAS_SELECCIONADAS",
+            1
+        ).coerceAtLeast(1)
+
+        tvNumero.text = numero
+        tvCliente.text = cliente
+        tvTipo.text = tipo
+        tvConcepto.text = concepto
+        tvActividades.text = actividades
+        tvMonto.text = monto
+        tvFormaPago.text = formaPago
+        tvCuotas.text = cuotasSeleccionadas.toString()
+
+        val montoNumero = monto.toDoubleOrNull()
+
+        tvValorCuota.text = if (montoNumero != null) {
+            String.format(
+                Locale.US,
+                "%.2f",
+                montoNumero / cuotasSeleccionadas
+            )
+        } else {
+            "0.00"
         }
 
         // =====================================================
@@ -128,34 +164,15 @@ class ComprobantePagoActivity : AppCompatActivity() {
 
         btnVolver.setOnClickListener {
 
-            val intent = Intent(
+            val regreso = Intent(
                 this,
                 CobroCuotaActivity::class.java
-            )
-
-            // Mantener los datos del socio
-            intent.putExtra(
-                "USUARIO_NOMBRE",
-                tvCliente.text.toString()
-            )
-
-            val socio = DatosClub.clientes.find {
-                it.nombre.equals(
-                    tvCliente.text.toString(),
-                    ignoreCase = true
-                )
+            ).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
             }
 
-            if (socio != null) {
-                intent.putExtra(
-                    "USUARIO_DNI",
-                    socio.dni
-                )
-            }
-
-            startActivity(intent)
-
-            finish()
+            startActivity(regreso)
         }
     }
 }
