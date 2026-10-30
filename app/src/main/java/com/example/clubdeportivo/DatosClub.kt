@@ -55,7 +55,7 @@ object DatosClub {
 
     val administradores = listOf(
         Administrador("Brian","12345678","35974xxx","brianzairpaez@gmail.com","116834xxxx",true),
-        Administrador("Hernan","Clave123","xxxxxxxx","@gmail.com","",true),
+        Administrador("Hernan","Clave123","4444xxxxx","herna.schwindt1@gmail.com","",true),
         Administrador("Micaela","Michi123","xxxxxxxx","@gmail.com","",true),
         Administrador("Dora","Dora1234","xxxxxxxx","@gmail.com","",true)
     )
@@ -69,6 +69,22 @@ object DatosClub {
         Actividad("ACT06", "Fútbol", 15000.0,"20:00", "Lionel Messi", R.drawable.ic_futbol),
         Actividad("ACT09", "Voley", 9500.0, "15:00", "Hugo Conte",R.drawable.ic_voley)
     )
+    fun calcularTotalActividades(cliente: ClienteClub): Double? {
+        var total = 0.0
+
+        for (nombreActividad in cliente.actividades) {
+            val actividad = listaActividades.firstOrNull {
+                it.nombre.equals(
+                    nombreActividad.trim(),
+                    ignoreCase = true
+                )
+            } ?: return null
+
+            total += actividad.costo
+        }
+
+        return total
+    }
 
 
     val clientes = mutableListOf(
