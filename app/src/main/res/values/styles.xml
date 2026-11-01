@@ -53,4 +53,13 @@
        <item name="android:scaleType">fitCenter</item>
        <item name="android:src">@drawable/logo</item>
     </style>
+
+    <style name="logoMediano">
+        <item name="android:layout_width">160dp</item>
+        <item name="android:layout_height">120dp</item>
+        <item name="android:contentDescription">Logo Club"</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:src">@drawable/logo</item>
+    </style>
+
 </resources>
