@@ -37,10 +37,38 @@ class DetalleCuotaVencidaActivity : AppCompatActivity() {
         tvAfiliado.text = usuarioId.ifEmpty { usuarioDni }
         tvFecha.text = fechaVencimiento
 
-        // Evento Cobrar Cuota
+
+// COBRAR CUOTA
+
+
         btnCobrar.setOnClickListener {
-            Toast.makeText(this, "Cobrando cuota a $usuarioNombre...", Toast.LENGTH_SHORT).show()
-            // Acá podés redirigir a la pantalla de Pago/Comprobante si la tienen
+
+            val intentCobro = Intent(
+                this,
+                CobroCuotaActivity::class.java
+            )
+
+            intentCobro.putExtra(
+                "USUARIO_NOMBRE",
+                usuarioNombre
+            )
+
+            intentCobro.putExtra(
+                "USUARIO_DNI",
+                usuarioDni
+            )
+
+            intentCobro.putExtra(
+                "USUARIO_ID",
+                usuarioId
+            )
+
+            intentCobro.putExtra(
+                "FECHA_VENCIMIENTO",
+                fechaVencimiento
+            )
+
+            startActivity(intentCobro)
         }
 
         // Botón Volver (Regresa a la lista de socios)
