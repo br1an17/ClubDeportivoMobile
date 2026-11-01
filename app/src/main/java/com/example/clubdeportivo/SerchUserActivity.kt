@@ -26,9 +26,11 @@ class SerchUserActivity : AppCompatActivity() {
             if (criterioBusqueda.isEmpty()) {
                 Toast.makeText(this, "Ingrese DNI o N° de Socio para buscar", Toast.LENGTH_SHORT).show()
             } else {
-                val usuarioEncontrado = DatosClub.buscarSocio(criterioBusqueda)
+                val dbHelper = SocioDBHelper(this)
+                val usuarioEncontrado = dbHelper.buscarClientePorCriterio(criterioBusqueda)
 
                 if (usuarioEncontrado != null) {
+
                     Toast.makeText(this, "Usuario encontrado: ${usuarioEncontrado.nombre}", Toast.LENGTH_SHORT).show()
 
                     val intent = Intent(this, ActionsUserActivity::class.java)

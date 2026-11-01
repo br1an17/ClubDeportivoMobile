@@ -159,34 +159,53 @@ class RegisterActivity : AppCompatActivity() {
         email: String,
         esSocio: Boolean,
         aptoFisico: Boolean){
-        val existe = DatosClub.clientes.any{it.dni == dni }
-        if (existe){
-            Toast.makeText(this,"Ya existe un Cliente con el DNI $dni" , Toast.LENGTH_LONG).show()
-            return
-        }
-    val prefijo = if (esSocio)"SOC-" else "NS-"
-    val numeroClienteGenerado = prefijo +(DatosClub.clientes.size +1200)
-        val montoCuota = if (esSocio)"150000" else "0"
+        val dbHelper = SocioDBHelper(this)
+        val dbReadable = dbHelper.readableDatabase
+        val cursor = dbReadable.rawQuery(
+           "SELECT * FROM ${SocioDBHelper.TABLE_USUARIOS} WHERE ${SocioDBHelper.COLUM_DNI} = ?",
+           arrayOf(dni))
+        val existe = cursor.count > 0
+        cursor.close()
 
-        val  nuevoCliente = ClienteClub(
+        val cursorCount = dbReadable.rawQuery("SELECT COUNT(*) FROM ${SocioDBHelper.TABLE_USUARIOS}", null)
+        var totalRegistros = 0
+        if (cursorCount.moveToFirst()) {
+            totalRegistros = cursorCount.getInt(0)
+        }
+        cursorCount.close()
+        dbReadable.close()
+
+        if (existe){
+        Toast.makeText(this,"Ya existe un Cliente con el DNI $dni en la base de datos",Toast.LENGTH_LONG).show()
+        return
+        }
+
+    val prefijo = if (esSocio)"SOC-" else "NS-"
+    val numeroClienteGenerado = prefijo +(totalRegistros +1200)
+        val montoCuota = if (esSocio)"150000" else "0"
+        val  tipoStr = if(esSocio) "Socio" else "no_socio"
+        val aptoInt = if(aptoFisico) 1 else 0
+
+        val  insertadoExitoso = dbHelper.insertarUsuario(
             dni = dni,
             nombre = nombre,
             apellido = apellido,
             telefono = telefono,
             email = email,
-            esSocio = esSocio,
-            aptoFisico = aptoFisico,
+            tipo = tipoStr,
+            aptoFisico = aptoInt,
             numeroAfiliado = numeroClienteGenerado,
-            cuotaAlDia = true,
             cuotaMonto = montoCuota,
+            cuotaAlDia = 1,
             vencimiento = "10/11/2026",
-            actividades = mutableListOf()
         )
-        DatosClub.clientes.add(nuevoCliente)
 
-        val tipoClienteStr = if (esSocio) "Socio" else "No Socio"
-        Toast.makeText(this, "¡$tipoClienteStr $nombre $apellido registrado con éxito!", Toast.LENGTH_LONG).show()
-        finish()
-
+if(insertadoExitoso){
+    val tipoCliente = if(esSocio) "Socio" else "No socio"
+    Toast.makeText(this, "¡$tipoCliente $nombre $apellido registrado con éxito!", Toast.LENGTH_LONG).show()
+finish()
+}else{
+    Toast.makeText(this,"Error al registrar el cliente",Toast.LENGTH_LONG).show()
+}
     }
 }
