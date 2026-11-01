@@ -24,6 +24,7 @@ class ActionsUserActivity : AppCompatActivity() {
         val idRecibido = intent.getStringExtra("USUARIO_ID")?:""
         tvNombreSocio.text = nombreRecibido
 
+
         val socio = DatosClub.clientes.find {
             (dniRecibido.isNotEmpty() && it.dni == dniRecibido) ||
                     (idRecibido.isNotEmpty() && it.numeroAfiliado == idRecibido) ||
@@ -70,6 +71,7 @@ class ActionsUserActivity : AppCompatActivity() {
             intent.putExtra("NOMBRE_SOCIO", socio?.nombre ?: nombreRecibido)
             intent.putExtra("DOCUMENTO_SOCIO", socio?.dni ?: dniRecibido)
             intent.putExtra("ESTADO_SOCIO", estadoTexto)
+            intent.putExtra("EMAIL_SOCIO", socio?.email ?: "")
             startActivity(intent)
         }
         btnVolver.setOnClickListener {

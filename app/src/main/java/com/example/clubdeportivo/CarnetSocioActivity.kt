@@ -19,23 +19,36 @@ class CarnetSocioActivity : AppCompatActivity() {
     private lateinit var tvNombreSocio: TextView
     private lateinit var tvDocumentoSocio: TextView
     private lateinit var tvEstadoSocio: TextView
-    private lateinit var btnVolver: Button
     private lateinit var ivCodigoQR: ImageView
+    private var bitmapQRGlobal: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_carnet_socio)
 
         // 1. Inicializar referencias de la interfaz
+
         tvNumAfiliado = findViewById(R.id.tvNumAfiliado)
         tvNombreSocio = findViewById(R.id.tvNombreSocio)
         tvDocumentoSocio = findViewById(R.id.tvDocumentoSocio)
         tvEstadoSocio = findViewById(R.id.tvEstadoSocio)
-        btnVolver = findViewById(R.id.btnVolver)
         ivCodigoQR = findViewById(R.id.ivCodigoQR)
 
+         val btnVolver = findViewById<Button>(R.id.btnVolver)
+         val btnEnviarMail = findViewById<Button>(R.id.btnEnviarMail)
+         val emailSocio = intent.getStringExtra("EMAIL_SOCIO") ?: ""
         // 2. Cargar los datos recibidos del socio
         cargarDatosSocio()
+
+        btnEnviarMail.setOnClickListener {
+
+            val nombreSocio = tvNombreSocio.text.toString()
+            val numAfiliado = tvNumAfiliado.text.toString()
+            val documento = tvDocumentoSocio.text.toString()
+            val estado = tvEstadoSocio.text.toString()
+
+            EmailHelper.enviarCarnet(this, emailSocio, nombreSocio, numAfiliado, documento, estado,bitmapQRGlobal)
+        }
 
         // 3. Configurar el botón "Volver" para ir al menú principal (HomeActivity)
         btnVolver.setOnClickListener {
@@ -65,11 +78,11 @@ class CarnetSocioActivity : AppCompatActivity() {
         Vencimiento: 28/11/2026
     """.trimIndent()
 
-        val bitmapQR = generarCodigoQR(textoParaQR)
+        bitmapQRGlobal = generarCodigoQR(textoParaQR)
 
 
-        if (bitmapQR != null) {
-            ivCodigoQR.setImageBitmap(bitmapQR)
+        if (bitmapQRGlobal != null) {
+            ivCodigoQR.setImageBitmap(bitmapQRGlobal)
         } else {
             ivCodigoQR.setImageResource(R.drawable.ic_launcher_background)
         }
@@ -97,4 +110,5 @@ class CarnetSocioActivity : AppCompatActivity() {
             return null
         }
     }
+
 }

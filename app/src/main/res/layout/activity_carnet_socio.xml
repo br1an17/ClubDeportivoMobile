@@ -156,10 +156,14 @@
                 tools:text="Al día" />
         </LinearLayout>
 
+        <!-- Botón Enviar carnet -->
+        <Button
+            android:id="@+id/btnEnviarMail"
+            android:text="Enviar carnet"
+            style="@style/BotonVolver" />
         <!-- Botón Volver -->
         <Button
             android:id="@+id/btnVolver"
             style="@style/BotonVolver" />
-
     </LinearLayout>
 </ScrollView>
