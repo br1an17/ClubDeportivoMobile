@@ -49,34 +49,44 @@ class DetailActivity: AppCompatActivity(){
             finish()
         }}
         private fun asignarActividadASocio() {
-            val socio = DatosClub.clientes.find {
-                (usuarioDni.isNotEmpty() && it.dni == usuarioDni) ||
-                        (usuarioId.isNotEmpty() && it.numeroAfiliado == usuarioId) ||
-                        (usuarioNombre.isNotEmpty() && it.nombre.equals(usuarioNombre, ignoreCase = true))
-            }
+            val dbHelper = SocioDBHelper(this)
 
-            if (socio != null) {
-                if (socio.actividades.contains(actividadNombre)) {
+            val idActividad = dbHelper.obtenerIdActividadPorNombre(actividadNombre)
+
+            if (usuarioDni.isNotEmpty() && idActividad != -1) {
+
+                val clienteEncontrado = dbHelper.buscarClientePorCriterio(usuarioDni)
+
+                if (clienteEncontrado != null) {
+                    val exito = dbHelper.asignarActividadUsuario(usuarioDni, idActividad)
+
+                    if (exito) {
+                        Toast.makeText(
+                            this,
+                            "¡Actividad $actividadNombre asignada con éxito!",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        finish() // Cerramos el detalle y volvemos
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "El socio ya tiene asignada esta actividad o hubo un error",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
                     Toast.makeText(
                         this,
-                        "El socio ya tiene asignada la actividad $actividadNombre",
+                        "No se encontró el socio en la base de datos",
                         Toast.LENGTH_SHORT
                     ).show()
-                } else {
-                    socio.actividades.add(actividadNombre)
-                    Toast.makeText(
-                        this,
-                        "Actividad $actividadNombre asignada a ${socio.nombre} con éxito",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    finish()
                 }
             } else {
                 Toast.makeText(
                     this,
-                    "No se encontró el socio en la base de datos",
+                    "Error: DNI de socio inválido o actividad no registrada",
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
-    }
+}
