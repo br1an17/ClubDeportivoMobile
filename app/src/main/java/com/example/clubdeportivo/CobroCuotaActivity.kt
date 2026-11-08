@@ -7,6 +7,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 class CobroCuotaActivity : AppCompatActivity() {
@@ -18,6 +20,11 @@ class CobroCuotaActivity : AppCompatActivity() {
     private var medioPago = ""
 
     private var socioSeleccionado: ClienteClub? = null
+
+    private var detallesCobro: List<DetalleFacturaInput> = emptyList()
+
+    private var facturaIdRegistrada: Long? = null
+    private var numeroFacturaRegistrada: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,26 +45,50 @@ class CobroCuotaActivity : AppCompatActivity() {
         // RECIBIR DATOS DEL CLIENTE
         // =====================================================
 
-        val nombreUsuario = intent.getStringExtra("USUARIO_NOMBRE")
-        val dniUsuario = intent.getStringExtra("USUARIO_DNI")
+        val nombreUsuario =
+            intent.getStringExtra("USUARIO_NOMBRE")
+
+        val dniUsuario =
+            intent.getStringExtra("USUARIO_DNI")
+
+        val idUsuario =
+            intent.getStringExtra("USUARIO_ID")
 
         // =====================================================
-        // BUSCAR CLIENTE POR DNI O NOMBRE
+        // BUSCAR CLIENTE Y ACTIVIDADES EN SQLITE
         // =====================================================
 
-        socioSeleccionado = DatosClub.clientes.firstOrNull { socio ->
+        val dbHelper = SocioDBHelper(this)
 
-            if (!dniUsuario.isNullOrBlank()) {
-                socio.dni == dniUsuario
-            } else if (!nombreUsuario.isNullOrBlank()) {
-                socio.nombre.equals(
-                    nombreUsuario,
-                    ignoreCase = true
-                ) || "${socio.nombre} ${socio.apellido}".trim()
-                    .equals(nombreUsuario, ignoreCase = true)
-            } else {
-                false
+        try {
+
+            socioSeleccionado = when {
+
+                !dniUsuario.isNullOrBlank() ->
+                    dbHelper.obtenerClientePorDni(dniUsuario)
+
+                !idUsuario.isNullOrBlank() ->
+                    dbHelper.buscarClientePorCriterio(idUsuario)
+
+                else -> null
             }
+
+            socioSeleccionado?.let { socio ->
+
+                detallesCobro =
+                    dbHelper.obtenerDetallesActividadesDeSocio(socio.dni)
+            }
+
+        } catch (e: Exception) {
+
+            Toast.makeText(
+                this,
+                "Error al consultar SQLite: ${e.message}",
+                Toast.LENGTH_LONG
+            ).show()
+
+        } finally {
+            dbHelper.close()
         }
 
         // =====================================================
@@ -68,22 +99,23 @@ class CobroCuotaActivity : AppCompatActivity() {
 
         if (socio != null) {
 
-            val nombreCompleto =
+            etNombre.setText(
                 "${socio.nombre} ${socio.apellido}".trim()
+            )
 
-            etNombre.setText(nombreCompleto)
             etDni.setText(socio.dni)
 
-            val totalActividades =
-                DatosClub.calcularTotalActividades(socio)
+            val totalActividades = detallesCobro.sumOf {
+                it.precioUnitario * it.cantidad
+            }
 
-            if (totalActividades == null) {
+            if (detallesCobro.isEmpty()) {
 
                 etMonto.setText("")
 
                 Toast.makeText(
                     this,
-                    "Falta configurar el precio de alguna actividad",
+                    "El cliente no tiene actividades asignadas",
                     Toast.LENGTH_LONG
                 ).show()
 
@@ -102,12 +134,19 @@ class CobroCuotaActivity : AppCompatActivity() {
 
             etNombre.setText(nombreUsuario ?: "")
             etDni.setText(dniUsuario ?: "")
-
-            // No inventar un importe si no se encontró al cliente.
             etMonto.setText("")
+
+            Toast.makeText(
+                this,
+                "No se encontró el cliente en SQLite",
+                Toast.LENGTH_LONG
+            ).show()
         }
 
-        // Los datos del cliente no se pueden modificar
+        // =====================================================
+        // PROTEGER NOMBRE Y DNI
+        // =====================================================
+
         etNombre.isFocusable = false
         etNombre.isClickable = false
         etNombre.isCursorVisible = false
@@ -122,70 +161,55 @@ class CobroCuotaActivity : AppCompatActivity() {
 
         btnTarjeta.setOnClickListener {
 
-            val nombre = etNombre.text.toString().trim()
-            val dni = etDni.text.toString().trim()
-            val monto = etMonto.text.toString().trim()
+            val socioActual = socioSeleccionado
 
-            if (nombre.isBlank() || dni.isBlank()) {
+            if (socioActual == null || detallesCobro.isEmpty()) {
 
                 Toast.makeText(
                     this,
-                    "No se encontraron los datos del cliente",
+                    "No hay actividades para cobrar",
                     Toast.LENGTH_SHORT
                 ).show()
 
                 return@setOnClickListener
             }
 
-            val montoNumero =
-                monto.replace(",", ".").toDoubleOrNull()
+            val monto = etMonto.text.toString()
+                .trim()
+                .replace(",", ".")
+
+            val montoNumero = monto.toDoubleOrNull()
 
             if (montoNumero == null || montoNumero <= 0) {
 
                 etMonto.error = "El monto no es válido"
-                etMonto.requestFocus()
-
                 return@setOnClickListener
             }
 
             medioPago = "Tarjeta"
-
-            val cliente = socioSeleccionado
 
             val datos = Intent(
                 this,
                 CantidadCuotasActivity::class.java
             ).apply {
 
-                putExtra("USUARIO_NOMBRE", nombre)
-                putExtra("USUARIO_DNI", dni)
-
-                putExtra(
-                    "NUMERO",
-                    cliente?.numeroAfiliado ?: "S/N"
-                )
+                putExtra("USUARIO_NOMBRE", etNombre.text.toString())
+                putExtra("USUARIO_DNI", socioActual.dni)
+                putExtra("NUMERO", socioActual.numeroAfiliado ?: "S/N")
 
                 putExtra(
                     "CLIENTE",
-                    if (cliente != null) {
-                        "${cliente.nombre} ${cliente.apellido}".trim()
-                    } else {
-                        nombre
-                    }
+                    "${socioActual.nombre} ${socioActual.apellido}".trim()
                 )
 
                 putExtra(
                     "TIPO",
-                    if (cliente?.esSocio == true) {
-                        "Cuota"
-                    } else {
-                        "Actividades"
-                    }
+                    if (socioActual.esSocio) "Cuota" else "Actividades"
                 )
 
                 putExtra(
                     "CONCEPTO",
-                    if (cliente?.esSocio == true) {
+                    if (socioActual.esSocio) {
                         "Cuota mensual"
                     } else {
                         "Pago de actividades"
@@ -194,7 +218,9 @@ class CobroCuotaActivity : AppCompatActivity() {
 
                 putExtra(
                     "ACTIVIDADES",
-                    cliente?.actividades?.joinToString(", ") ?: ""
+                    detallesCobro.joinToString(", ") {
+                        it.descripcion
+                    }
                 )
 
                 putExtra("MONTO", monto)
@@ -220,7 +246,7 @@ class CobroCuotaActivity : AppCompatActivity() {
         }
 
         // =====================================================
-        // COBRAR
+        // CONFIRMAR COBRO
         // =====================================================
 
         btnCobrar.setOnClickListener {
@@ -245,75 +271,202 @@ class CobroCuotaActivity : AppCompatActivity() {
     }
 
     // =====================================================
-    // ABRIR COMPROBANTE
+    // REALIZAR COBRO Y GUARDAR FACTURA
     // =====================================================
 
-    private fun abrirComprobante() {
+    private fun realizarCobro() {
 
-        val nombre = etNombre.text.toString().trim()
-        val dni = etDni.text.toString().trim()
-        val monto = etMonto.text.toString().trim()
+        val socio = socioSeleccionado
 
-        if (
-            nombre.isBlank() ||
-            dni.isBlank() ||
-            monto.isBlank()
-        ) {
+        if (socio == null) {
 
             Toast.makeText(
                 this,
-                "Complete los datos antes de ver el comprobante",
+                "No se encontró el cliente",
                 Toast.LENGTH_SHORT
             ).show()
 
             return
         }
 
-        val montoNumero =
-            monto.replace(",", ".").toDoubleOrNull()
+        if (medioPago.isEmpty()) {
 
-        if (montoNumero == null || montoNumero <= 0) {
+            Toast.makeText(
+                this,
+                "Seleccione un medio de pago",
+                Toast.LENGTH_SHORT
+            ).show()
 
-            etMonto.error = "El monto no es válido"
             return
         }
 
-        val cliente = socioSeleccionado
+        if (medioPago == "Tarjeta") {
+
+            Toast.makeText(
+                this,
+                "Complete el proceso de tarjeta y selección de cuotas",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            return
+        }
+
+        if (detallesCobro.isEmpty()) {
+
+            Toast.makeText(
+                this,
+                "El cliente no tiene actividades para facturar",
+                Toast.LENGTH_LONG
+            ).show()
+
+            return
+        }
+
+        val monto = etMonto.text.toString()
+            .trim()
+            .replace(",", ".")
+            .toDoubleOrNull()
+
+        if (monto == null || monto <= 0) {
+
+            etMonto.error = "Ingrese un monto válido"
+            return
+        }
+
+        // Evitar registrar dos veces el mismo cobro
+        if (facturaIdRegistrada != null) {
+
+            Toast.makeText(
+                this,
+                "Este cobro ya fue registrado",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            return
+        }
+
+        // =====================================================
+        // GENERAR NÚMERO Y FECHA
+        // =====================================================
+
+        val numeroFactura =
+            "FAC-${System.currentTimeMillis()}"
+
+        val fecha = SimpleDateFormat(
+            "yyyy-MM-dd HH:mm:ss",
+            Locale.getDefault()
+        ).format(Date())
+
+        // =====================================================
+        // GUARDAR FACTURA Y PAGO EN SQLITE
+        // =====================================================
+
+        val dbHelper = SocioDBHelper(this)
+
+        val resultado = try {
+
+            dbHelper.registrarFacturaConPago(
+                numeroFactura = numeroFactura,
+                dniSocio = socio.dni,
+                fecha = fecha,
+                formaPago = medioPago,
+                cantidadCuotas = 1,
+                detalles = detallesCobro
+            )
+
+        } catch (e: Exception) {
+
+            Toast.makeText(
+                this,
+                "Error al guardar el cobro: ${e.message}",
+                Toast.LENGTH_LONG
+            ).show()
+
+            -1L
+
+        } finally {
+            dbHelper.close()
+        }
+
+        if (resultado != -1L) {
+
+            facturaIdRegistrada = resultado
+            numeroFacturaRegistrada = numeroFactura
+
+            findViewById<Button>(R.id.btnCobrar).isEnabled = false
+
+            Toast.makeText(
+                this,
+                "Cobro registrado correctamente en SQLite",
+                Toast.LENGTH_LONG
+            ).show()
+
+        } else {
+
+            Toast.makeText(
+                this,
+                "No se pudo registrar la factura y el pago",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    // =====================================================
+    // ABRIR COMPROBANTE
+    // =====================================================
+
+    private fun abrirComprobante() {
+
+        val socio = socioSeleccionado
+
+        if (socio == null) {
+
+            Toast.makeText(
+                this,
+                "No se encontró el cliente",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            return
+        }
+
+        if (facturaIdRegistrada == null) {
+
+            Toast.makeText(
+                this,
+                "Primero debe confirmar el cobro",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            return
+        }
 
         val intentComprobante = Intent(
             this,
             ComprobantePagoActivity::class.java
         ).apply {
 
-            putExtra("USUARIO_NOMBRE", nombre)
-            putExtra("USUARIO_DNI", dni)
+            putExtra("FACTURA_ID", facturaIdRegistrada!!)
+            putExtra("NUMERO_FACTURA", numeroFacturaRegistrada)
 
-            putExtra(
-                "NUMERO",
-                cliente?.numeroAfiliado ?: "S/N"
-            )
+            putExtra("USUARIO_NOMBRE", etNombre.text.toString())
+            putExtra("USUARIO_DNI", socio.dni)
+
+            putExtra("NUMERO", socio.numeroAfiliado ?: "S/N")
 
             putExtra(
                 "CLIENTE",
-                if (cliente != null) {
-                    "${cliente.nombre} ${cliente.apellido}".trim()
-                } else {
-                    nombre
-                }
+                "${socio.nombre} ${socio.apellido}".trim()
             )
 
             putExtra(
                 "TIPO",
-                if (cliente?.esSocio == true) {
-                    "Cuota"
-                } else {
-                    "Actividades"
-                }
+                if (socio.esSocio) "Cuota" else "Actividades"
             )
 
             putExtra(
                 "CONCEPTO",
-                if (cliente?.esSocio == true) {
+                if (socio.esSocio) {
                     "Cuota mensual"
                 } else {
                     "Pago de actividades"
@@ -322,16 +475,17 @@ class CobroCuotaActivity : AppCompatActivity() {
 
             putExtra(
                 "ACTIVIDADES",
-                cliente?.actividades?.joinToString(", ") ?: ""
+                detallesCobro.joinToString(", ") {
+                    it.descripcion
+                }
             )
-
-            putExtra("MONTO", monto)
 
             putExtra(
-                "FORMA_PAGO",
-                medioPago.ifBlank { "No seleccionado" }
+                "MONTO",
+                etMonto.text.toString()
             )
 
+            putExtra("FORMA_PAGO", medioPago)
             putExtra("CUOTAS_SELECCIONADAS", 1)
         }
 
@@ -360,66 +514,5 @@ class CobroCuotaActivity : AppCompatActivity() {
 
         startActivity(intentHome)
         finish()
-    }
-
-    // =====================================================
-    // REALIZAR COBRO
-    // =====================================================
-
-    private fun realizarCobro() {
-
-        val nombre = etNombre.text.toString().trim()
-        val dni = etDni.text.toString().trim()
-        val monto = etMonto.text.toString().trim()
-
-        if (nombre.isEmpty()) {
-
-            Toast.makeText(
-                this,
-                "No se seleccionó ningún usuario",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            return
-        }
-
-        if (dni.isEmpty()) {
-
-            Toast.makeText(
-                this,
-                "El usuario seleccionado no tiene DNI",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            return
-        }
-
-        val montoNumero =
-            monto.replace(",", ".").toDoubleOrNull()
-
-        if (montoNumero == null || montoNumero <= 0) {
-
-            etMonto.error = "Ingrese un monto válido"
-            etMonto.requestFocus()
-
-            return
-        }
-
-        if (medioPago.isEmpty()) {
-
-            Toast.makeText(
-                this,
-                "Seleccione Tarjeta o Efectivo",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            return
-        }
-
-        Toast.makeText(
-            this,
-            "Cobro realizado correctamente",
-            Toast.LENGTH_LONG
-        ).show()
     }
 }
