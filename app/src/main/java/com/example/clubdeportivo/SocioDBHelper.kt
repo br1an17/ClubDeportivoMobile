@@ -95,6 +95,16 @@ class SocioDBHelper(context: Context): SQLiteOpenHelper(context,DATABASE_NAME,nu
         db?.execSQL(createTablePagos)
         db?.execSQL(createTableActividades)
         db?.execSQL(createTableAdministradores)
+
+        db?.execSQL("""
+            INSERT INTO $TABLE_ADMINISTRADORES 
+            ($COLUMN_ADMIN_NOMBRE, $COLUMN_ADMIN_PASS, $COLUMN_ADMIN_DNI, $COLUMN_ADMIN_MAIL, $COLUMN_ADMIN_TEL, $COLUMN_ADMIN_ACTIVO) 
+            VALUES 
+            ('Brian', '12345678', '35974xxx', 'brianzairpaez@gmail.com', '116834xxxx', 1),
+            ('Hernan', 'Clave123', '4444xxxxx', 'herna.schwindt1@gmail.com', '', 1),
+            ('Micaela', 'Michi123', 'xxxxxxxx', '@gmail.com', '', 1),
+            ('Dora', 'Dora1234', 'xxxxxxxx', '@gmail.com', '', 1)
+        """)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
