@@ -3,6 +3,7 @@ package com.example.clubdeportivo
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
@@ -61,14 +62,16 @@ class AssignActivityActivity : AppCompatActivity() {
         val actividadInfo = DatosClub.listaActividades.find {
             it.nombre.equals(nombreActividad, ignoreCase = true)
         }
-         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra("USUARIO_NOMBRE", usuarioNombre)
-        intent.putExtra("USUARIO_DNI", usuarioDni)
-        intent.putExtra("USUARIO_ID", usuarioId)
-        intent.putExtra("ACTIVIDAD_NOMBRE", nombreActividad)
-        intent.putExtra("ACTIVIDAD_HORARIO", actividadInfo?.horario ?: "20:00")
-        intent.putExtra("ACTIVIDAD_PROFESOR", actividadInfo?.profesor ?: "Por Asignar")
-        intent.putExtra("ACTIVIDAD_VALOR",actividadInfo?.costo?:10000)
+
+        val intent = Intent(this, DetailActivity::class.java).apply {
+            putExtra("USUARIO_NOMBRE", usuarioNombre)
+            putExtra("USUARIO_DNI", usuarioDni)
+            putExtra("USUARIO_ID", usuarioId)
+            putExtra("ACTIVIDAD_NOMBRE", nombreActividad)
+            putExtra("ACTIVIDAD_HORARIO", actividadInfo?.horario ?: "20:00")
+            putExtra("ACTIVIDAD_PROFESOR", actividadInfo?.profesor ?: "Por Asignar")
+            putExtra("ACTIVIDAD_VALOR", actividadInfo?.costo ?: 10000.0)
+        }
         startActivity(intent)
     }
 }

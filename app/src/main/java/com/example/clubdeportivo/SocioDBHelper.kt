@@ -90,11 +90,34 @@ class SocioDBHelper(context: Context): SQLiteOpenHelper(context,DATABASE_NAME,nu
                 + "$COLUMN_ADMIN_TEL TEXT, "
                 + "$COLUMN_ADMIN_ACTIVO INTEGER)")
 
+        val createTableUsuarioActividad = """
+            CREATE TABLE usuario_actividad (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                dni_usuario TEXT,
+                id_actividad INTEGER,
+                FOREIGN KEY(dni_usuario) REFERENCES $TABLE_USUARIOS($COLUM_DNI),
+                FOREIGN KEY(id_actividad) REFERENCES $TABLE_ACTIVIDADES($COLUMN_ACT_ID)
+            )
+        """
 
         db?.execSQL(createTableUsuarios)
         db?.execSQL(createTablePagos)
         db?.execSQL(createTableActividades)
         db?.execSQL(createTableAdministradores)
+        db?.execSQL(createTableUsuarioActividad)
+
+        db?.execSQL("""
+            INSERT INTO $TABLE_ACTIVIDADES 
+            ($COLUMN_ACT_NOMBRE, $COLUMN_ACT_COSTO, $COLUMN_ACT_HORARIO, $COLUMN_ACT_PROFESOR) 
+            VALUES 
+            ('Natación', 12000.0, '09:00', 'Georgina Bardach'),
+            ('G. artistica', 10000.0, '17:00', 'Nadia Comaneci'),
+            ('Basquet', 9000.0, '19:00', 'Manu Ginóbili'),
+            ('Karate', 8500.0, '18:00', 'Miyagi Sensei'),
+            ('Tennis', 18000.0, '16:00', 'Guillermo Coria'),
+            ('Fútbol', 15000.0, '20:00', 'Lionel Messi'),
+            ('Voley', 9500.0, '15:00', 'Hugo Conte')
+        """)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -172,4 +195,65 @@ class SocioDBHelper(context: Context): SQLiteOpenHelper(context,DATABASE_NAME,nu
         db.close()
         return cliente
     }
+
+    fun asignarActividadUsuario(dniUsuario: String, idActividad: Int): Boolean {
+        val db = this.writableDatabase
+        val valores = ContentValues().apply {
+            put("dni_usuario", dniUsuario)
+            put("id_actividad", idActividad)
+        }
+        val resultado = db.insert("usuario_actividad", null, valores)
+        db.close()
+        return resultado != -1L
     }
+
+    fun obtenerActividadesDeUsuario(dniUsuario: String): ArrayList<String>{
+        val listaActividades = ArrayList<String>()
+        val db = this.readableDatabase
+        val query = """
+            SELECT a.$COLUMN_ACT_NOMBRE
+            FROM $TABLE_ACTIVIDADES a
+            INNER JOIN usuario_actividad ua ON a.$COLUMN_ACT_ID = ua.id_actividad
+            WHERE ua.dni_usuario = ?
+        """
+        val cursor = db.rawQuery(query, arrayOf(dniUsuario))
+
+        if (cursor.moveToFirst()){
+            do {
+                val nombreActividad = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ACT_NOMBRE))
+                listaActividades.add(nombreActividad)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return listaActividades
+    }
+
+    fun obtenerIdActividadPorNombre(nombreActividad: String): Int {
+        var idActividad = -1
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT $COLUMN_ACT_ID FROM $TABLE_ACTIVIDADES WHERE $COLUMN_ACT_NOMBRE LIKE ?",
+            arrayOf(nombreActividad)
+        )
+        if (cursor.moveToFirst()) {
+            idActividad = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ACT_ID))
+        }
+        cursor.close()
+        db.close()
+        return idActividad
+    }
+
+    fun desasignarActividadDeUsuario(dniUsuario: String, idActividad: Int): Boolean {
+        val db = this.writableDatabase
+        val resultado = db.delete(
+            "usuario_actividad",
+            "dni_usuario = ? AND id_actividad = ?",
+            arrayOf(dniUsuario, idActividad.toString())
+        )
+        db.close()
+        return resultado > 0
+    }
+
+
+}
