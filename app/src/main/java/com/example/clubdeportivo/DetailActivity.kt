@@ -177,12 +177,48 @@ class DetailActivity : AppCompatActivity() {
 
                 finish()
 
+        }}
+        private fun asignarActividadASocio() {
+            val dbHelper = SocioDBHelper(this)
+
+            val idActividad = dbHelper.obtenerIdActividadPorNombre(actividadNombre)
+
+            if (usuarioDni.isNotEmpty() && idActividad != -1) {
+
+                val clienteEncontrado = dbHelper.buscarClientePorCriterio(usuarioDni)
+
+                if (clienteEncontrado != null) {
+                    val exito = dbHelper.asignarActividadUsuario(usuarioDni, idActividad)
+
+                    if (exito) {
+                        Toast.makeText(
+                            this,
+                            "¡Actividad $actividadNombre asignada con éxito!",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        finish() // Cerramos el detalle y volvemos
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "El socio ya tiene asignada esta actividad o hubo un error",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    Toast.makeText(
+                        this,
+                        "No se encontró el socio en la base de datos",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             } else {
 
                 Toast.makeText(
                     this,
                     "No se pudo guardar la actividad",
                     Toast.LENGTH_LONG
+                    "Error: DNI de socio inválido o actividad no registrada",
+                    Toast.LENGTH_SHORT
                 ).show()
             }
 

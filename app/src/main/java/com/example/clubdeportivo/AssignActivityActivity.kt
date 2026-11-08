@@ -178,6 +178,19 @@ class AssignActivityActivity : AppCompatActivity() {
             actividad.costo
         )
 
+        val actividadInfo = DatosClub.listaActividades.find {
+            it.nombre.equals(nombreActividad, ignoreCase = true)
+        }
+
+        val intent = Intent(this, DetailActivity::class.java).apply {
+            putExtra("USUARIO_NOMBRE", usuarioNombre)
+            putExtra("USUARIO_DNI", usuarioDni)
+            putExtra("USUARIO_ID", usuarioId)
+            putExtra("ACTIVIDAD_NOMBRE", nombreActividad)
+            putExtra("ACTIVIDAD_HORARIO", actividadInfo?.horario ?: "20:00")
+            putExtra("ACTIVIDAD_PROFESOR", actividadInfo?.profesor ?: "Por Asignar")
+            putExtra("ACTIVIDAD_VALOR", actividadInfo?.costo ?: 10000.0)
+        }
         startActivity(intent)
     }
 }
