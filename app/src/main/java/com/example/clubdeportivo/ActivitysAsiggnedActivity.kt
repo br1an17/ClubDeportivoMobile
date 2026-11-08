@@ -61,14 +61,8 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
     private fun cargarActividadesSocio(contenedor: LinearLayout) {
         contenedor.removeAllViews()
 
-
-        val socio = DatosClub.clientes.find {
-            (usuarioDni.isNotEmpty() && it.dni == usuarioDni) ||
-                    (usuarioId.isNotEmpty() && it.numeroAfiliado == usuarioId) ||
-                    (usuarioNombre.isNotEmpty() && it.nombre.equals(usuarioNombre, ignoreCase = true))
-        }
-
-        val listaActividades = socio?.actividades ?: mutableListOf()
+        val dbHelper = SocioDBHelper(this)
+        val listaActividades = dbHelper.obtenerActividadesDeUsuario(usuarioDni)
 
         if (listaActividades.isEmpty()) {
             val tvVacio = TextView(this).apply {
@@ -87,22 +81,38 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
                 setTextColor(Color.BLACK)
                 textSize = 16f
                 setTypeface(null, Typeface.BOLD)
-
-
                 setBackgroundColor(Color.parseColor("#DCE7D4"))
-                cornerRadius = 24 // Bordes redondeados suaves
+                cornerRadius = 24
 
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    120 // Alto del botón
+                    120
                 ).apply {
-                    setMargins(0, 0, 0, 24) // Espaciado entre botones
+                    setMargins(0, 0, 0, 24)
                 }
 
                 setOnClickListener {
-                    Toast.makeText(context, "Actividad: $actividad", Toast.LENGTH_SHORT).show()
+                    val builder = android.app.AlertDialog.Builder(this@ActivitysAsiggnedActivity)
+                    builder.setTitle("Eliminar actividad")
+                    builder.setMessage("¿Estás seguro de que deseas quitar la actividad '$actividad' de este socio?")
+
+                    builder.setPositiveButton("Sí, eliminar") { _, _ ->
+                        val idActividad = dbHelper.obtenerIdActividadPorNombre(actividad)
+                        val exito = dbHelper.desasignarActividadDeUsuario(usuarioDni, idActividad)
+
+                        if (exito) {
+                            Toast.makeText(context, "Se eliminó la actividad $actividad", Toast.LENGTH_SHORT).show()
+                            cargarActividadesSocio(contenedor)
+                        } else {
+                            Toast.makeText(context, "No se pudo eliminar la actividad", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    builder.setNegativeButton("Cancelar", null)
+                    builder.show()
                 }
             }
+            // Aquí se agrega correctamente dentro del for, pero fuera del setOnClickListener
             contenedor.addView(botonActividad)
         }
     }
