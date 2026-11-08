@@ -27,7 +27,15 @@ class SerchUserActivity : AppCompatActivity() {
                 Toast.makeText(this, "Ingrese DNI o N° de Socio para buscar", Toast.LENGTH_SHORT).show()
             } else {
                 val dbHelper = SocioDBHelper(this)
-                val usuarioEncontrado = dbHelper.buscarClientePorCriterio(criterioBusqueda)
+
+                // Asegurar que existan los datos iniciales
+                dbHelper.cargarDatosInicialesSiFaltan()
+
+                // Buscar directamente en SQLite
+                val usuarioEncontrado =
+                    dbHelper.buscarClientePorCriterio(criterioBusqueda)
+
+                dbHelper.close()
 
                 if (usuarioEncontrado != null) {
 

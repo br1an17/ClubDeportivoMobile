@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -8,13 +8,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:paddingTop="8dp"
         android:paddingBottom="8dp">
 
-        <!-- PAGO EXITOSO -->
+        <!-- TÍTULO SUPERIOR -->
 
         <TextView
             android:layout_width="wrap_content"
@@ -26,11 +26,14 @@
             android:gravity="center"
             android:layout_marginBottom="8dp" />
 
-        <!-- COMPROBANTE -->
+        <!-- CONTENEDOR DEL COMPROBANTE -->
 
         <LinearLayout
-            android:layout_width="380dp"
-            android:layout_height="790dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="790dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:orientation="vertical"
             android:background="@drawable/bg_comprobante"
             android:paddingStart="16dp"
@@ -38,7 +41,7 @@
             android:paddingTop="18dp"
             android:paddingBottom="10dp">
 
-            <!-- TÍTULO -->
+            <!-- TÍTULO DEL COMPROBANTE -->
 
             <TextView
                 android:layout_width="match_parent"
@@ -50,7 +53,7 @@
                 android:gravity="center"
                 android:layout_marginBottom="24dp" />
 
-            <!-- NÚMERO -->
+            <!-- NÚMERO DE FACTURA -->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,23 +65,23 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.1"
                     android:text="Número:"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <EditText
+                <TextView
                     android:id="@+id/tvNumero"
                     android:layout_width="0dp"
-                    android:layout_height="36dp"
-                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:layout_weight="1.4"
                     android:background="@drawable/line_bottom_green"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textStyle="bold"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:inputType="text"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp" />
 
@@ -96,23 +99,23 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.1"
                     android:text="Cliente:"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <EditText
+                <TextView
                     android:id="@+id/tvCliente"
                     android:layout_width="0dp"
-                    android:layout_height="36dp"
-                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:layout_weight="1.4"
                     android:background="@drawable/line_bottom_green"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:inputType="textPersonName"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp" />
 
@@ -130,23 +133,23 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.1"
                     android:text="Tipo:"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <EditText
+                <TextView
                     android:id="@+id/tvTipo"
                     android:layout_width="0dp"
-                    android:layout_height="36dp"
-                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:layout_weight="1.4"
                     android:background="@drawable/line_bottom_green"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:inputType="text"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp" />
 
@@ -164,23 +167,23 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.1"
                     android:text="Concepto:"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <EditText
+                <TextView
                     android:id="@+id/tvConcepto"
                     android:layout_width="0dp"
-                    android:layout_height="36dp"
-                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:layout_weight="1.4"
                     android:background="@drawable/line_bottom_green"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:inputType="text"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp" />
 
@@ -192,31 +195,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
+                android:gravity="top"
                 android:layout_marginBottom="6dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.1"
                     android:text="Actividades:"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <EditText
+                <TextView
                     android:id="@+id/tvActividades"
                     android:layout_width="0dp"
-                    android:layout_height="36dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
+                    android:minHeight="40dp"
                     android:background="@drawable/line_bottom_green"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
-                    android:singleLine="true"
-                    android:inputType="text"
+                    android:gravity="center_vertical"
+                    android:maxLines="5"
+                    android:singleLine="false"
+                    android:scrollHorizontally="false"
                     android:paddingStart="4dp"
-                    android:paddingEnd="4dp" />
+                    android:paddingEnd="4dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp" />
 
             </LinearLayout>
 
@@ -232,23 +240,23 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.1"
                     android:text="Monto: $"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <EditText
+                <TextView
                     android:id="@+id/tvMonto"
                     android:layout_width="0dp"
-                    android:layout_height="36dp"
-                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:layout_weight="1.4"
                     android:background="@drawable/line_bottom_green"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:inputType="numberDecimal"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp" />
 
@@ -266,23 +274,23 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.1"
                     android:text="Forma de Pago:"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <EditText
+                <TextView
                     android:id="@+id/tvFormaPago"
                     android:layout_width="0dp"
-                    android:layout_height="36dp"
-                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:layout_weight="1.4"
                     android:background="@drawable/line_bottom_green"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:inputType="text"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp" />
 
@@ -300,23 +308,23 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.1"
                     android:text="Cuotas:"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <EditText
+                <TextView
                     android:id="@+id/tvCuotas"
                     android:layout_width="0dp"
-                    android:layout_height="36dp"
-                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:layout_weight="1.4"
                     android:background="@drawable/line_bottom_green"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:inputType="number"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp" />
 
@@ -334,29 +342,29 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.1"
                     android:text="Valor Cuota: $"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <EditText
+                <TextView
                     android:id="@+id/tvValorCuota"
                     android:layout_width="0dp"
-                    android:layout_height="36dp"
-                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:layout_weight="1.4"
                     android:background="@drawable/line_bottom_green"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:inputType="numberDecimal"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp" />
 
             </LinearLayout>
 
-            <!-- ESPACIO ANTES DE BOTONES -->
+            <!-- ESPACIO ANTES DE LOS BOTONES -->
 
             <Space
                 android:layout_width="match_parent"
@@ -373,9 +381,10 @@
 
                 <Button
                     android:id="@+id/btnImprimir"
-                    android:layout_width="150dp"
+                    android:layout_width="0dp"
                     android:layout_height="50dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="10dp"
                     android:backgroundTint="@color/GreenStrong"
                     android:text="Imprimir"
                     android:textColor="@color/black"
@@ -385,8 +394,10 @@
 
                 <Button
                     android:id="@+id/btnVolver"
-                    android:layout_width="150dp"
+                    android:layout_width="0dp"
                     android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
                     android:backgroundTint="@color/GreenStrong"
                     android:text="Volver"
                     android:textColor="@color/black"
@@ -396,7 +407,7 @@
 
             </LinearLayout>
 
-            <!-- LOGO -->
+            <!-- LOGO DEL CLUB -->
 
             <ImageView
                 android:id="@+id/imgLogoComprobante"
