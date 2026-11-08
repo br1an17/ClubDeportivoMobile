@@ -154,6 +154,8 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
         // =====================================================
         // SI NO TIENE ACTIVIDADES
         // =====================================================
+        val dbHelper = SocioDBHelper(this)
+        val listaActividades = dbHelper.obtenerActividadesDeUsuario(usuarioDni)
 
         if (listaActividades.isEmpty()) {
 
@@ -269,5 +271,29 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
         }
 
         contenedorActividades.addView(tvVacio)
+    }
+                    val builder = android.app.AlertDialog.Builder(this@ActivitysAsiggnedActivity)
+                    builder.setTitle("Eliminar actividad")
+                    builder.setMessage("¿Estás seguro de que deseas quitar la actividad '$actividad' de este socio?")
+
+                    builder.setPositiveButton("Sí, eliminar") { _, _ ->
+                        val idActividad = dbHelper.obtenerIdActividadPorNombre(actividad)
+                        val exito = dbHelper.desasignarActividadDeUsuario(usuarioDni, idActividad)
+
+                        if (exito) {
+                            Toast.makeText(context, "Se eliminó la actividad $actividad", Toast.LENGTH_SHORT).show()
+                            cargarActividadesSocio(contenedor)
+                        } else {
+                            Toast.makeText(context, "No se pudo eliminar la actividad", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    builder.setNegativeButton("Cancelar", null)
+                    builder.show()
+                }
+            }
+            // Aquí se agrega correctamente dentro del for, pero fuera del setOnClickListener
+            contenedor.addView(botonActividad)
+        }
     }
 }
