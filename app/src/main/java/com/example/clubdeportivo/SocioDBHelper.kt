@@ -19,7 +19,7 @@ class SocioDBHelper(context: Context) :
     companion object {
 
         private const val DATABASE_NAME = "club_deportivo.db"
-        private const val DATABASE_VERSION = 2
+        private const val DATABASE_VERSION = 3
 
         // =====================================================
         // USUARIOS
@@ -151,9 +151,10 @@ class SocioDBHelper(context: Context) :
         crearIndices(db)
     }
 
-    // =====================================================
-    // ACTUALIZAR BASE SIN BORRAR DATOS
-    // =====================================================
+
+// =====================================================
+// ACTUALIZAR BASE SIN BORRAR DATOS
+// =====================================================
 
     override fun onUpgrade(
         db: SQLiteDatabase,
@@ -161,6 +162,7 @@ class SocioDBHelper(context: Context) :
         newVersion: Int
     ) {
 
+        // MIGRACIÓN DE LA VERSIÓN 1 A LA 2
         if (oldVersion < 2) {
 
             agregarColumnaSiNoExiste(
@@ -218,7 +220,69 @@ class SocioDBHelper(context: Context) :
 
             crearIndices(db)
         }
+
+        // MIGRACIÓN DE LA VERSIÓN 2 A LA 3
+        if (oldVersion < 3) {
+
+            crearTablaUsuarioActividades(db)
+
+            migrarActividadesAsignadasAntiguas(db)
+        }
     }
+
+// =====================================================
+// MIGRAR ACTIVIDADES DE LA TABLA ANTIGUA
+// =====================================================
+
+    private fun migrarActividadesAsignadasAntiguas(
+        db: SQLiteDatabase
+    ) {
+
+        // Comprobar si existe la tabla antigua
+        val cursor = db.rawQuery(
+            """
+        SELECT 1
+        FROM sqlite_master
+        WHERE type = 'table'
+          AND name = ?
+        """.trimIndent(),
+            arrayOf("usuario_actividad")
+        )
+
+        val tablaExiste = try {
+            cursor.moveToFirst()
+        } finally {
+            cursor.close()
+        }
+
+        if (!tablaExiste) return
+
+        // Copiar las asignaciones antiguas a la tabla nueva
+        db.execSQL(
+            """
+        INSERT OR IGNORE INTO $TABLE_USUARIO_ACTIVIDADES (
+            $COLUMN_REL_DNI,
+            $COLUMN_REL_ACTIVIDAD,
+            $COLUMN_REL_FECHA
+        )
+        SELECT
+            antigua.dni_usuario,
+            antigua.id_actividad,
+            NULL
+        FROM usuario_actividad antigua
+        INNER JOIN $TABLE_USUARIOS socio
+            ON socio.$COLUM_DNI = antigua.dni_usuario
+        INNER JOIN $TABLE_ACTIVIDADES actividad
+            ON actividad.$COLUMN_ACT_ID = antigua.id_actividad
+        WHERE antigua.dni_usuario IS NOT NULL
+          AND antigua.id_actividad IS NOT NULL
+        """.trimIndent()
+        )
+    }
+
+// =====================================================
+// AGREGAR COLUMNAS SIN DUPLICARLAS
+// =====================================================
 
     private fun agregarColumnaSiNoExiste(
         db: SQLiteDatabase,
@@ -234,20 +298,22 @@ class SocioDBHelper(context: Context) :
 
         var existe = false
 
-        while (cursor.moveToNext()) {
+        try {
+            while (cursor.moveToNext()) {
 
-            val nombreColumna =
-                cursor.getString(
-                    cursor.getColumnIndexOrThrow("name")
-                )
+                val nombreColumna =
+                    cursor.getString(
+                        cursor.getColumnIndexOrThrow("name")
+                    )
 
-            if (nombreColumna.equals(columna, ignoreCase = true)) {
-                existe = true
-                break
+                if (nombreColumna.equals(columna, ignoreCase = true)) {
+                    existe = true
+                    break
+                }
             }
+        } finally {
+            cursor.close()
         }
-
-        cursor.close()
 
         if (!existe) {
             db.execSQL(
@@ -255,6 +321,7 @@ class SocioDBHelper(context: Context) :
             )
         }
     }
+
 
     // =====================================================
     // CREAR TABLA USUARIOS
