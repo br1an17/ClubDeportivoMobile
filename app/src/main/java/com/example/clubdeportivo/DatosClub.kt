@@ -100,7 +100,7 @@ object DatosClub {
             cuotaAlDia = true,
             cuotaMonto = "150000.00",
             vencimiento = "02/10/2026",
-            actividades = mutableListOf("Fútbol", "Musculación")
+            actividades = mutableListOf("Fútbol")
         ),
         ClienteClub(
             dni = "38987654",
@@ -128,7 +128,7 @@ object DatosClub {
             cuotaAlDia = true,
             cuotaMonto = "150000.00",
             vencimiento = "05/10/2026",
-            actividades = mutableListOf("Tennis", "Yoga")
+            actividades = mutableListOf("Tennis", "G. artistica")
         ),
         ClienteClub(
             dni = "35444555",
@@ -142,7 +142,7 @@ object DatosClub {
             cuotaAlDia = true,
             cuotaMonto = "150000.00",
             vencimiento = "15/10/2026",
-            actividades = mutableListOf("Paddle")
+            actividades = mutableListOf("Tennis")
         ),
         ClienteClub(
             dni = "39888999",
@@ -156,7 +156,7 @@ object DatosClub {
             cuotaAlDia = false,
             cuotaMonto = "150000.00",
             vencimiento = "28/09/2026",
-            actividades = mutableListOf("Pilates")
+            actividades = mutableListOf("G. artistica")
         )
     )
 
