@@ -195,11 +195,55 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
 
                 setOnClickListener {
 
-                    Toast.makeText(
-                        this@ActivitysAsiggnedActivity,
-                        "Actividad: $actividad",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    android.app.AlertDialog.Builder(this@ActivitysAsiggnedActivity)
+                        .setTitle("Eliminar actividad")
+                        .setMessage(
+                            "¿Estás seguro de que deseas quitar la actividad '$actividad' de este socio?"
+                        )
+                        .setPositiveButton("Sí, eliminar") { _, _ ->
+
+                            if (usuarioDni.isBlank()) {
+                                Toast.makeText(
+                                    this@ActivitysAsiggnedActivity,
+                                    "No se pudo identificar el DNI del socio",
+                                    Toast.LENGTH_LONG
+                                ).show()
+
+                                return@setPositiveButton
+                            }
+
+                            val exito = try {
+                                SocioDBHelper(this@ActivitysAsiggnedActivity)
+                                    .quitarActividadASocio(usuarioDni, actividad)
+                            } catch (e: Exception) {
+                                Toast.makeText(
+                                    this@ActivitysAsiggnedActivity,
+                                    "Error al eliminar: ${e.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+
+                                false
+                            }
+
+                            if (exito) {
+                                Toast.makeText(
+                                    this@ActivitysAsiggnedActivity,
+                                    "Se eliminó la actividad $actividad",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                                cargarActividadesSocio()
+
+                            } else {
+                                Toast.makeText(
+                                    this@ActivitysAsiggnedActivity,
+                                    "No se pudo eliminar la actividad",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                        .setNegativeButton("Cancelar", null)
+                        .show()
                 }
             }
 
