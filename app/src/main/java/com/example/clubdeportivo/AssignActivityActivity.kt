@@ -11,9 +11,9 @@ import com.google.android.material.button.MaterialButton
 
 class AssignActivityActivity : AppCompatActivity() {
 
-    private var usuarioNombre: String = ""
-    private var usuarioDni: String = ""
-    private var usuarioId: String = ""
+    private var usuarioNombre = ""
+    private var usuarioDni = ""
+    private var usuarioId = ""
 
     private var actividadesDisponibles: List<Actividad> = emptyList()
 
@@ -41,21 +41,35 @@ class AssignActivityActivity : AppCompatActivity() {
 
         val dbHelper = SocioDBHelper(this)
 
-        actividadesDisponibles =
-            dbHelper.obtenerCatalogoActividades()
+        actividadesDisponibles = try {
 
-        // Cargar catálogo inicial si la tabla está vacía
-        if (actividadesDisponibles.isEmpty()) {
+            var lista = dbHelper.obtenerCatalogoActividades()
 
-            dbHelper.sincronizarCatalogoActividades(
-                DatosClub.listaActividades
-            )
+            // Cargar catálogo inicial si la tabla está vacía
+            if (lista.isEmpty()) {
 
-            actividadesDisponibles =
-                dbHelper.obtenerCatalogoActividades()
+                dbHelper.sincronizarCatalogoActividades(
+                    DatosClub.listaActividades
+                )
+
+                lista = dbHelper.obtenerCatalogoActividades()
+            }
+
+            lista
+
+        } catch (e: Exception) {
+
+            Toast.makeText(
+                this,
+                "Error al cargar actividades: ${e.message}",
+                Toast.LENGTH_LONG
+            ).show()
+
+            emptyList()
+
+        } finally {
+            dbHelper.close()
         }
-
-        dbHelper.close()
 
         if (actividadesDisponibles.isEmpty()) {
 
@@ -64,7 +78,6 @@ class AssignActivityActivity : AppCompatActivity() {
                 "No hay actividades cargadas en la base de datos",
                 Toast.LENGTH_LONG
             ).show()
-
         }
 
         // =====================================================
@@ -113,7 +126,6 @@ class AssignActivityActivity : AppCompatActivity() {
                 }
 
                 boton.setOnClickListener {
-
                     seleccionarActividad(actividad)
                 }
 
@@ -143,20 +155,9 @@ class AssignActivityActivity : AppCompatActivity() {
             DetailActivity::class.java
         )
 
-        intent.putExtra(
-            "USUARIO_NOMBRE",
-            usuarioNombre
-        )
-
-        intent.putExtra(
-            "USUARIO_DNI",
-            usuarioDni
-        )
-
-        intent.putExtra(
-            "USUARIO_ID",
-            usuarioId
-        )
+        intent.putExtra("USUARIO_NOMBRE", usuarioNombre)
+        intent.putExtra("USUARIO_DNI", usuarioDni)
+        intent.putExtra("USUARIO_ID", usuarioId)
 
         intent.putExtra(
             "ACTIVIDAD_NOMBRE",
@@ -178,19 +179,6 @@ class AssignActivityActivity : AppCompatActivity() {
             actividad.costo
         )
 
-        val actividadInfo = DatosClub.listaActividades.find {
-            it.nombre.equals(nombreActividad, ignoreCase = true)
-        }
-
-        val intent = Intent(this, DetailActivity::class.java).apply {
-            putExtra("USUARIO_NOMBRE", usuarioNombre)
-            putExtra("USUARIO_DNI", usuarioDni)
-            putExtra("USUARIO_ID", usuarioId)
-            putExtra("ACTIVIDAD_NOMBRE", nombreActividad)
-            putExtra("ACTIVIDAD_HORARIO", actividadInfo?.horario ?: "20:00")
-            putExtra("ACTIVIDAD_PROFESOR", actividadInfo?.profesor ?: "Por Asignar")
-            putExtra("ACTIVIDAD_VALOR", actividadInfo?.costo ?: 10000.0)
-        }
         startActivity(intent)
     }
 }
