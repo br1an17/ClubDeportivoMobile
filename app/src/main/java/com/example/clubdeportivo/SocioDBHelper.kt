@@ -1,4 +1,3 @@
-
 package com.example.clubdeportivo
 
 import android.content.ContentValues
@@ -123,191 +122,36 @@ class SocioDBHelper(context: Context) :
         const val COLUMN_ADMIN_MAIL = "mail"
         const val COLUMN_ADMIN_TEL = "tel"
         const val COLUMN_ADMIN_ACTIVO = "activo"
-    }
+    } // FIN DEL COMPANION OBJECT
 
     // =====================================================
     // CONFIGURACIÓN DE SQLITE
     // =====================================================
 
-    override fun onConfigure(db: SQLiteDatabase) {
+    override fun onConfigure(db: SQLiteDatabase?) {
         super.onConfigure(db)
-        db.setForeignKeyConstraintsEnabled(true)
+        db?.setForeignKeyConstraintsEnabled(true)
     }
 
     // =====================================================
     // CREAR BASE DE DATOS
     // =====================================================
 
-    override fun onCreate(db: SQLiteDatabase) {
-
-        crearTablaUsuarios(db)
-        crearTablaActividades(db)
-        crearTablaAdministradores(db)
-        crearTablaFacturas(db)
-        crearTablaDetalleFactura(db)
-        crearTablaUsuarioActividades(db)
-        crearTablaPagos(db)
-
-        crearIndices(db)
-    }
-
-
-// =====================================================
-// ACTUALIZAR BASE SIN BORRAR DATOS
-// =====================================================
-
-    override fun onUpgrade(
-        db: SQLiteDatabase,
-        oldVersion: Int,
-        newVersion: Int
-    ) {
-
-        // MIGRACIÓN DE LA VERSIÓN 1 A LA 2
-        if (oldVersion < 2) {
-
-            agregarColumnaSiNoExiste(
-                db,
-                TABLE_ACTIVIDADES,
-                COLUMN_ACT_CODIGO,
-                "TEXT"
-            )
-
-            agregarColumnaSiNoExiste(
-                db,
-                TABLE_ACTIVIDADES,
-                COLUMN_ACT_ICONO,
-                "INTEGER"
-            )
-
-            crearTablaFacturas(db)
-            crearTablaDetalleFactura(db)
-            crearTablaUsuarioActividades(db)
-
-            agregarColumnaSiNoExiste(
-                db,
-                TABLE_PAGOS,
-                COLUMN_PAGO_FACTURA_ID,
-                "INTEGER"
-            )
-
-            agregarColumnaSiNoExiste(
-                db,
-                TABLE_PAGOS,
-                COLUMN_MEDIO_PAGO,
-                "TEXT"
-            )
-
-            agregarColumnaSiNoExiste(
-                db,
-                TABLE_PAGOS,
-                COLUMN_CUOTAS_PAGO,
-                "INTEGER DEFAULT 1"
-            )
-
-            agregarColumnaSiNoExiste(
-                db,
-                TABLE_PAGOS,
-                COLUMN_VALOR_CUOTA,
-                "REAL"
-            )
-
-            agregarColumnaSiNoExiste(
-                db,
-                TABLE_PAGOS,
-                COLUMN_ESTADO_PAGO,
-                "TEXT DEFAULT 'REGISTRADO'"
-            )
-
-            crearIndices(db)
-        }
-
-        // MIGRACIÓN DE LA VERSIÓN 2 A LA 3
-        if (oldVersion < 3) {
-
-            crearTablaUsuarioActividades(db)
-
-            migrarActividadesAsignadasAntiguas(db)
-        }
-    }
-
-// =====================================================
-// MIGRAR ACTIVIDADES DE LA TABLA ANTIGUA
-// =====================================================
-
-    private fun migrarActividadesAsignadasAntiguas(
-        db: SQLiteDatabase
-    ) {
-
-        // Comprobar si existe la tabla antigua
-        val cursor = db.rawQuery(
-            """
-        SELECT 1
-        FROM sqlite_master
-        WHERE type = 'table'
-          AND name = ?
-        """.trimIndent(),
-            arrayOf("usuario_actividad")
-        )
-
-        val tablaExiste = try {
-            cursor.moveToFirst()
-        } finally {
-            cursor.close()
     override fun onCreate(db: SQLiteDatabase?) {
-        val createTableUsuarios =(
-        "CREATE TABLE $TABLE_USUARIOS("
-                + "$COLUM_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "$COLUM_DNI TEXT UNIQUE NOT NULL,"
-                + "$COLUM_NOMBRE TEXT NOT NULL,"
-                + "$COLUM_APELLIDO TEXT NOT NULL, "
-                + "$COLUM_TELEFONO TEXT, "
-                + "$COLUM_MAIL TEXT, "
-                + "$COLUM_TIPO TEXT, "
-                + "$COLUM_APTO_FISICO INTEGER, "
-                + "$COLUM_NUM_AFILIADO TEXT, "
-                + "$COLUM_CUOTA_MONTO TEXT, "
-                + "$COLUM_CUOTA_AL_DIA INTEGER, "
-                + "$COLUM_VENCIMIENTO TEXT)".trimIndent()
-        )
-        val createTablePagos = ("CREATE TABLE $TABLE_PAGOS ("
-                + "$COLUMN_PAGO_ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "$COLUMN_PAGO_DNI TEXT, "
-                + "$COLUMN_MONTO REAL, "
-                + "$COLUMN_FECHA TEXT)")
+        val database = db ?: return // Asegura que db no sea nulo
 
-        val createTableActividades = ("CREATE TABLE $TABLE_ACTIVIDADES ("
-                + "$COLUMN_ACT_ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "$COLUMN_ACT_NOMBRE TEXT NOT NULL, "
-                + "$COLUMN_ACT_COSTO REAL, "
-                + "$COLUMN_ACT_HORARIO TEXT, "
-                + "$COLUMN_ACT_PROFESOR TEXT)")
+        crearTablaUsuarios(database)
+        crearTablaActividades(database)
+        crearTablaAdministradores(database)
+        crearTablaFacturas(database)
+        crearTablaDetalleFactura(database)
+        crearTablaUsuarioActividades(database)
+        crearTablaPagos(database)
 
-        val createTableAdministradores = ("CREATE TABLE $TABLE_ADMINISTRADORES ("
-                + "$COLUMN_ADMIN_ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "$COLUMN_ADMIN_NOMBRE TEXT, "
-                + "$COLUMN_ADMIN_PASS TEXT, "
-                + "$COLUMN_ADMIN_DNI TEXT UNIQUE, "
-                + "$COLUMN_ADMIN_MAIL TEXT, "
-                + "$COLUMN_ADMIN_TEL TEXT, "
-                + "$COLUMN_ADMIN_ACTIVO INTEGER)")
+        crearIndices(database)
 
-        val createTableUsuarioActividad = """
-            CREATE TABLE usuario_actividad (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                dni_usuario TEXT,
-                id_actividad INTEGER,
-                FOREIGN KEY(dni_usuario) REFERENCES $TABLE_USUARIOS($COLUM_DNI),
-                FOREIGN KEY(id_actividad) REFERENCES $TABLE_ACTIVIDADES($COLUMN_ACT_ID)
-            )
-        """
-
-        db?.execSQL(createTableUsuarios)
-        db?.execSQL(createTablePagos)
-        db?.execSQL(createTableActividades)
-        db?.execSQL(createTableAdministradores)
-        db?.execSQL(createTableUsuarioActividad)
-
-        db?.execSQL("""
+        // Insertar actividades iniciales
+        database.execSQL("""
             INSERT INTO $TABLE_ACTIVIDADES 
             ($COLUMN_ACT_NOMBRE, $COLUMN_ACT_COSTO, $COLUMN_ACT_HORARIO, $COLUMN_ACT_PROFESOR) 
             VALUES 
@@ -321,68 +165,85 @@ class SocioDBHelper(context: Context) :
         """)
     }
 
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.execSQL("DROP TABLE IF EXISTS $TABLE_USUARIOS")
-        db?.execSQL("DROP TABLE IF EXISTS $TABLE_PAGOS")
-        db?.execSQL("DROP TABLE IF EXISTS $TABLE_ACTIVIDADES")
-        db?.execSQL("DROP TABLE IF EXISTS $TABLE_ADMINISTRADORES")
-        onCreate(db)
-    }
+    // =====================================================
+    // ACTUALIZAR BASE SIN BORRAR DATOS
+    // =====================================================
 
-    fun insertarUsuario(nombre: String,
-                        apellido: String,
-                        dni: String,
-                        telefono: String,
-                        email: String,
-                        tipo: String,
-                        aptoFisico: Int,         // 1 si tiene apto, 0 si no
-                        numeroAfiliado: String,
-                        cuotaMonto: String,
-                        cuotaAlDia: Int,         // 1 si está al día, 0 si debe
-                        vencimiento: String): Boolean{
-        val db= this.writableDatabase
-        val valores = ContentValues().apply {
-            put("nombre", nombre)
-            put("apellido", apellido)
-            put("dni", dni)
-            put("telefono", telefono)
-            put("email", email)
-            put("tipo", tipo)
-            put("apto_fisico", aptoFisico)
-            put("numero_afiliado", numeroAfiliado)
-            put("cuota_monto", cuotaMonto)
-            put("cuota_al_dia", cuotaAlDia)
-            put("vencimiento", vencimiento)
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        val database = db ?: return // Asegura que db no sea nulo
+
+        // MIGRACIÓN DE LA VERSIÓN 1 A LA 2
+        if (oldVersion < 2) {
+            agregarColumnaSiNoExiste(database, TABLE_ACTIVIDADES, COLUMN_ACT_CODIGO, "TEXT")
+            agregarColumnaSiNoExiste(database, TABLE_ACTIVIDADES, COLUMN_ACT_ICONO, "INTEGER")
+            crearTablaFacturas(database)
+            crearTablaDetalleFactura(database)
+            crearTablaUsuarioActividades(database)
+            agregarColumnaSiNoExiste(database, TABLE_PAGOS, COLUMN_PAGO_FACTURA_ID, "INTEGER")
+            agregarColumnaSiNoExiste(database, TABLE_PAGOS, COLUMN_MEDIO_PAGO, "TEXT")
+            agregarColumnaSiNoExiste(database, TABLE_PAGOS, COLUMN_CUOTAS_PAGO, "INTEGER DEFAULT 1")
+            agregarColumnaSiNoExiste(database, TABLE_PAGOS, COLUMN_VALOR_CUOTA, "REAL")
+            agregarColumnaSiNoExiste(database, TABLE_PAGOS, COLUMN_ESTADO_PAGO, "TEXT DEFAULT 'REGISTRADO'")
+            crearIndices(database)
         }
 
-        if (!tablaExiste) return
-
-        // Copiar las asignaciones antiguas a la tabla nueva
-        db.execSQL(
-            """
-        INSERT OR IGNORE INTO $TABLE_USUARIO_ACTIVIDADES (
-            $COLUMN_REL_DNI,
-            $COLUMN_REL_ACTIVIDAD,
-            $COLUMN_REL_FECHA
-        )
-        SELECT
-            antigua.dni_usuario,
-            antigua.id_actividad,
-            NULL
-        FROM usuario_actividad antigua
-        INNER JOIN $TABLE_USUARIOS socio
-            ON socio.$COLUM_DNI = antigua.dni_usuario
-        INNER JOIN $TABLE_ACTIVIDADES actividad
-            ON actividad.$COLUMN_ACT_ID = antigua.id_actividad
-        WHERE antigua.dni_usuario IS NOT NULL
-          AND antigua.id_actividad IS NOT NULL
-        """.trimIndent()
-        )
+        // MIGRACIÓN DE LA VERSIÓN 2 A LA 3
+        if (oldVersion < 3) {
+            crearTablaUsuarioActividades(database)
+            migrarActividadesAsignadasAntiguas(database)
+        }
     }
 
-// =====================================================
-// AGREGAR COLUMNAS SIN DUPLICARLAS
-// =====================================================
+    // =====================================================
+    // MIGRAR ACTIVIDADES DE LA TABLA ANTIGUA
+    // =====================================================
+
+    private fun migrarActividadesAsignadasAntiguas(db: SQLiteDatabase) {
+        // Comprobar si existe la tabla antigua
+        val cursor = db.rawQuery(
+            """
+            SELECT 1
+            FROM sqlite_master
+            WHERE type = 'table'
+              AND name = ?
+            """.trimIndent(),
+            arrayOf("usuario_actividad")
+        )
+
+        val tablaExiste = try {
+            cursor.moveToFirst()
+        } finally {
+            cursor.close()
+        }
+
+        if (tablaExiste) {
+            // Copiar las asignaciones antiguas a la tabla nueva
+            db.execSQL(
+                """
+                INSERT OR IGNORE INTO $TABLE_USUARIO_ACTIVIDADES (
+                    $COLUMN_REL_DNI,
+                    $COLUMN_REL_ACTIVIDAD,
+                    $COLUMN_REL_FECHA
+                )
+                SELECT
+                    antigua.dni_usuario,
+                    antigua.id_actividad,
+                    NULL
+                FROM usuario_actividad antigua
+                INNER JOIN $TABLE_USUARIOS socio
+                    ON socio.$COLUM_DNI = antigua.dni_usuario
+                INNER JOIN $TABLE_ACTIVIDADES actividad
+                    ON actividad.$COLUMN_ACT_ID = antigua.id_actividad
+                WHERE antigua.dni_usuario IS NOT NULL
+                  AND antigua.id_actividad IS NOT NULL
+                """.trimIndent()
+            )
+        }
+    }
+
+    // =====================================================
+    // AGREGAR COLUMNAS SIN DUPLICARLAS
+    // =====================================================
 
     private fun agregarColumnaSiNoExiste(
         db: SQLiteDatabase,
@@ -390,22 +251,12 @@ class SocioDBHelper(context: Context) :
         columna: String,
         definicion: String
     ) {
-
-        val cursor = db.rawQuery(
-            "PRAGMA table_info($tabla)",
-            null
-        )
-
+        val cursor = db.rawQuery("PRAGMA table_info($tabla)", null)
         var existe = false
 
         try {
             while (cursor.moveToNext()) {
-
-                val nombreColumna =
-                    cursor.getString(
-                        cursor.getColumnIndexOrThrow("name")
-                    )
-
+                val nombreColumna = cursor.getString(cursor.getColumnIndexOrThrow("name"))
                 if (nombreColumna.equals(columna, ignoreCase = true)) {
                     existe = true
                     break
@@ -416,19 +267,15 @@ class SocioDBHelper(context: Context) :
         }
 
         if (!existe) {
-            db.execSQL(
-                "ALTER TABLE $tabla ADD COLUMN $columna $definicion"
-            )
+            db.execSQL("ALTER TABLE $tabla ADD COLUMN $columna $definicion")
         }
     }
-
 
     // =====================================================
     // CREAR TABLA USUARIOS
     // =====================================================
 
     private fun crearTablaUsuarios(db: SQLiteDatabase) {
-
         db.execSQL(
             """
             CREATE TABLE IF NOT EXISTS $TABLE_USUARIOS (
@@ -454,7 +301,6 @@ class SocioDBHelper(context: Context) :
     // =====================================================
 
     private fun crearTablaActividades(db: SQLiteDatabase) {
-
         db.execSQL(
             """
             CREATE TABLE IF NOT EXISTS $TABLE_ACTIVIDADES (
@@ -475,7 +321,6 @@ class SocioDBHelper(context: Context) :
     // =====================================================
 
     private fun crearTablaAdministradores(db: SQLiteDatabase) {
-
         db.execSQL(
             """
             CREATE TABLE IF NOT EXISTS $TABLE_ADMINISTRADORES (
@@ -496,7 +341,6 @@ class SocioDBHelper(context: Context) :
     // =====================================================
 
     private fun crearTablaFacturas(db: SQLiteDatabase) {
-
         db.execSQL(
             """
             CREATE TABLE IF NOT EXISTS $TABLE_FACTURAS (
@@ -521,7 +365,6 @@ class SocioDBHelper(context: Context) :
     // =====================================================
 
     private fun crearTablaDetalleFactura(db: SQLiteDatabase) {
-
         db.execSQL(
             """
             CREATE TABLE IF NOT EXISTS $TABLE_DETALLE_FACTURA (
@@ -545,7 +388,6 @@ class SocioDBHelper(context: Context) :
     // =====================================================
 
     private fun crearTablaUsuarioActividades(db: SQLiteDatabase) {
-
         db.execSQL(
             """
             CREATE TABLE IF NOT EXISTS $TABLE_USUARIO_ACTIVIDADES (
@@ -569,7 +411,6 @@ class SocioDBHelper(context: Context) :
     // =====================================================
 
     private fun crearTablaPagos(db: SQLiteDatabase) {
-
         db.execSQL(
             """
             CREATE TABLE IF NOT EXISTS $TABLE_PAGOS (
@@ -596,17 +437,14 @@ class SocioDBHelper(context: Context) :
     // =====================================================
 
     private fun crearIndices(db: SQLiteDatabase) {
-
         db.execSQL(
             "CREATE UNIQUE INDEX IF NOT EXISTS idx_actividad_codigo " +
                     "ON $TABLE_ACTIVIDADES($COLUMN_ACT_CODIGO)"
         )
-
         db.execSQL(
             "CREATE INDEX IF NOT EXISTS idx_facturas_dni " +
                     "ON $TABLE_FACTURAS($COLUMN_FACTURA_DNI)"
         )
-
         db.execSQL(
             "CREATE INDEX IF NOT EXISTS idx_pagos_dni " +
                     "ON $TABLE_PAGOS($COLUMN_PAGO_DNI)"
@@ -630,11 +468,8 @@ class SocioDBHelper(context: Context) :
         cuotaAlDia: Int,
         vencimiento: String
     ): Boolean {
-
         val db = writableDatabase
-
         val valores = ContentValues().apply {
-
             put(COLUM_NOMBRE, nombre)
             put(COLUM_APELLIDO, apellido)
             put(COLUM_DNI, dni)
@@ -660,9 +495,7 @@ class SocioDBHelper(context: Context) :
     // =====================================================
 
     fun buscarClientePorCriterio(criterio: String): ClienteClub? {
-
         val db = readableDatabase
-
         val cursor = db.rawQuery(
             """
             SELECT * FROM $TABLE_USUARIOS
@@ -672,27 +505,19 @@ class SocioDBHelper(context: Context) :
                OR $COLUM_APELLIDO LIKE ?
             LIMIT 1
             """.trimIndent(),
-            arrayOf(
-                criterio,
-                criterio,
-                "%$criterio%",
-                "%$criterio%"
-            )
+            arrayOf(criterio, criterio, "%$criterio%", "%$criterio%")
         )
 
         val cliente = try {
-
             if (cursor.moveToFirst()) {
                 cursorACliente(cursor, db)
             } else {
                 null
             }
-
         } finally {
             cursor.close()
             db.close()
         }
-
         return cliente
     }
 
@@ -701,27 +526,22 @@ class SocioDBHelper(context: Context) :
     // =====================================================
 
     fun obtenerClientePorDni(dni: String): ClienteClub? {
-
         val db = readableDatabase
-
         val cursor = db.rawQuery(
             "SELECT * FROM $TABLE_USUARIOS WHERE $COLUM_DNI = ?",
             arrayOf(dni)
         )
 
         val cliente = try {
-
             if (cursor.moveToFirst()) {
                 cursorACliente(cursor, db)
             } else {
                 null
             }
-
         } finally {
             cursor.close()
             db.close()
         }
-
         return cliente
     }
 
@@ -729,65 +549,23 @@ class SocioDBHelper(context: Context) :
     // CONVERTIR CURSOR EN CLIENTE
     // =====================================================
 
-    private fun cursorACliente(
-        cursor: android.database.Cursor,
-        db: SQLiteDatabase
-    ): ClienteClub {
-
-        val dni = cursor.getString(
-            cursor.getColumnIndexOrThrow(COLUM_DNI)
-        )
-
-        val tipo = cursor.getString(
-            cursor.getColumnIndexOrThrow(COLUM_TIPO)
-        ) ?: ""
+    private fun cursorACliente(cursor: android.database.Cursor, db: SQLiteDatabase): ClienteClub {
+        val dni = cursor.getString(cursor.getColumnIndexOrThrow(COLUM_DNI))
+        val tipo = cursor.getString(cursor.getColumnIndexOrThrow(COLUM_TIPO)) ?: ""
 
         return ClienteClub(
-
             dni = dni,
-
-            nombre = cursor.getString(
-                cursor.getColumnIndexOrThrow(COLUM_NOMBRE)
-            ),
-
-            apellido = cursor.getString(
-                cursor.getColumnIndexOrThrow(COLUM_APELLIDO)
-            ),
-
-            telefono = cursor.getString(
-                cursor.getColumnIndexOrThrow(COLUM_TELEFONO)
-            ) ?: "",
-
-            email = cursor.getString(
-                cursor.getColumnIndexOrThrow(COLUM_MAIL)
-            ) ?: "",
-
+            nombre = cursor.getString(cursor.getColumnIndexOrThrow(COLUM_NOMBRE)),
+            apellido = cursor.getString(cursor.getColumnIndexOrThrow(COLUM_APELLIDO)),
+            telefono = cursor.getString(cursor.getColumnIndexOrThrow(COLUM_TELEFONO)) ?: "",
+            email = cursor.getString(cursor.getColumnIndexOrThrow(COLUM_MAIL)) ?: "",
             esSocio = tipo.equals("Socio", ignoreCase = true),
-
-            aptoFisico = cursor.getInt(
-                cursor.getColumnIndexOrThrow(COLUM_APTO_FISICO)
-            ) == 1,
-
-            numeroAfiliado = cursor.getString(
-                cursor.getColumnIndexOrThrow(COLUM_NUM_AFILIADO)
-            ),
-
-            cuotaMonto = cursor.getString(
-                cursor.getColumnIndexOrThrow(COLUM_CUOTA_MONTO)
-            ) ?: "0.00",
-
-            cuotaAlDia = cursor.getInt(
-                cursor.getColumnIndexOrThrow(COLUM_CUOTA_AL_DIA)
-            ) == 1,
-
-            vencimiento = cursor.getString(
-                cursor.getColumnIndexOrThrow(COLUM_VENCIMIENTO)
-            ),
-
-            actividades = obtenerActividadesAsignadas(
-                db,
-                dni
-            )
+            aptoFisico = cursor.getInt(cursor.getColumnIndexOrThrow(COLUM_APTO_FISICO)) == 1,
+            numeroAfiliado = cursor.getString(cursor.getColumnIndexOrThrow(COLUM_NUM_AFILIADO)),
+            cuotaMonto = cursor.getString(cursor.getColumnIndexOrThrow(COLUM_CUOTA_MONTO)) ?: "0.00",
+            cuotaAlDia = cursor.getInt(cursor.getColumnIndexOrThrow(COLUM_CUOTA_AL_DIA)) == 1,
+            vencimiento = cursor.getString(cursor.getColumnIndexOrThrow(COLUM_VENCIMIENTO)),
+            actividades = obtenerActividadesAsignadas(db, dni)
         )
     }
 
@@ -795,18 +573,12 @@ class SocioDBHelper(context: Context) :
     // SINCRONIZAR CATÁLOGO DE ACTIVIDADES
     // =====================================================
 
-    fun sincronizarCatalogoActividades(
-        actividades: List<Actividad>
-    ) {
-
+    fun sincronizarCatalogoActividades(actividades: List<Actividad>) {
         val db = writableDatabase
-
         db.beginTransaction()
 
         try {
-
             for (actividad in actividades) {
-
                 var idExistente: Long? = null
 
                 // Buscar por código
@@ -823,12 +595,10 @@ class SocioDBHelper(context: Context) :
                 if (cursorCodigo.moveToFirst()) {
                     idExistente = cursorCodigo.getLong(0)
                 }
-
                 cursorCodigo.close()
 
                 // Si no existe el código, buscar por nombre
                 if (idExistente == null) {
-
                     val cursorNombre = db.rawQuery(
                         """
                         SELECT $COLUMN_ACT_ID
@@ -842,12 +612,10 @@ class SocioDBHelper(context: Context) :
                     if (cursorNombre.moveToFirst()) {
                         idExistente = cursorNombre.getLong(0)
                     }
-
                     cursorNombre.close()
                 }
 
                 val valores = ContentValues().apply {
-
                     put(COLUMN_ACT_CODIGO, actividad.id)
                     put(COLUMN_ACT_NOMBRE, actividad.nombre)
                     put(COLUMN_ACT_COSTO, actividad.costo)
@@ -862,26 +630,17 @@ class SocioDBHelper(context: Context) :
                 }
 
                 if (idExistente != null) {
-
                     db.update(
                         TABLE_ACTIVIDADES,
                         valores,
                         "$COLUMN_ACT_ID = ?",
                         arrayOf(idExistente.toString())
                     )
-
                 } else {
-
-                    db.insert(
-                        TABLE_ACTIVIDADES,
-                        null,
-                        valores
-                    )
+                    db.insert(TABLE_ACTIVIDADES, null, valores)
                 }
             }
-
             db.setTransactionSuccessful()
-
         } finally {
             db.endTransaction()
             db.close()
@@ -893,62 +652,32 @@ class SocioDBHelper(context: Context) :
     // =====================================================
 
     fun obtenerCatalogoActividades(): List<Actividad> {
-
         val db = readableDatabase
-
-        val cursor = db.rawQuery(
-            "SELECT * FROM $TABLE_ACTIVIDADES ORDER BY $COLUMN_ACT_NOMBRE",
-            null
-        )
-
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_ACTIVIDADES ORDER BY $COLUMN_ACT_NOMBRE", null)
         val lista = mutableListOf<Actividad>()
 
         try {
-
             while (cursor.moveToNext()) {
-
-                val idReal = cursor.getLong(
-                    cursor.getColumnIndexOrThrow(COLUMN_ACT_ID)
-                )
-
-                val codigo = cursor.getString(
-                    cursor.getColumnIndexOrThrow(COLUMN_ACT_CODIGO)
-                ) ?: idReal.toString()
-
-                val iconoIndex =
-                    cursor.getColumnIndexOrThrow(COLUMN_ACT_ICONO)
-
-                val icono = if (cursor.isNull(iconoIndex)) {
-                    null
-                } else {
-                    cursor.getInt(iconoIndex)
-                }
+                val idReal = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_ACT_ID))
+                val codigo = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ACT_CODIGO)) ?: idReal.toString()
+                val iconoIndex = cursor.getColumnIndexOrThrow(COLUMN_ACT_ICONO)
+                val icono = if (cursor.isNull(iconoIndex)) null else cursor.getInt(iconoIndex)
 
                 lista.add(
                     Actividad(
                         id = codigo,
-                        nombre = cursor.getString(
-                            cursor.getColumnIndexOrThrow(COLUMN_ACT_NOMBRE)
-                        ),
-                        costo = cursor.getDouble(
-                            cursor.getColumnIndexOrThrow(COLUMN_ACT_COSTO)
-                        ),
-                        horario = cursor.getString(
-                            cursor.getColumnIndexOrThrow(COLUMN_ACT_HORARIO)
-                        ) ?: "20:00",
-                        profesor = cursor.getString(
-                            cursor.getColumnIndexOrThrow(COLUMN_ACT_PROFESOR)
-                        ) ?: "Sin Asignar",
+                        nombre = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ACT_NOMBRE)),
+                        costo = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_ACT_COSTO)),
+                        horario = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ACT_HORARIO)) ?: "20:00",
+                        profesor = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ACT_PROFESOR)) ?: "Sin Asignar",
                         iconoResId = icono
                     )
                 )
             }
-
         } finally {
             cursor.close()
             db.close()
         }
-
         return lista
     }
 
@@ -956,13 +685,8 @@ class SocioDBHelper(context: Context) :
     // VERIFICAR SI EL CLIENTE YA TIENE UNA ACTIVIDAD
     // =====================================================
 
-    fun tieneActividadAsignada(
-        dniSocio: String,
-        nombreActividad: String
-    ): Boolean {
-
+    fun tieneActividadAsignada(dniSocio: String, nombreActividad: String): Boolean {
         val db = readableDatabase
-
         val cursor = db.rawQuery(
             """
             SELECT 1
@@ -982,7 +706,6 @@ class SocioDBHelper(context: Context) :
             cursor.close()
             db.close()
         }
-
         return existe
     }
 
@@ -990,18 +713,11 @@ class SocioDBHelper(context: Context) :
     // ASIGNAR ACTIVIDAD A CLIENTE
     // =====================================================
 
-    fun asignarActividadASocio(
-        dniSocio: String,
-        nombreActividad: String
-    ): Boolean {
-
+    fun asignarActividadASocio(dniSocio: String, nombreActividad: String): Boolean {
         val db = writableDatabase
-
         db.beginTransaction()
 
         try {
-
-            // Buscar la actividad en el catálogo
             val cursor = db.rawQuery(
                 """
                 SELECT $COLUMN_ACT_ID
@@ -1027,20 +743,11 @@ class SocioDBHelper(context: Context) :
                 put(COLUMN_REL_FECHA, System.currentTimeMillis().toString())
             }
 
-            val resultado = db.insert(
-                TABLE_USUARIO_ACTIVIDADES,
-                null,
-                valores
-            )
-
-            if (resultado == -1L) {
-                return false
-            }
+            val resultado = db.insert(TABLE_USUARIO_ACTIVIDADES, null, valores)
+            if (resultado == -1L) return false
 
             db.setTransactionSuccessful()
-
             return true
-
         } finally {
             db.endTransaction()
             db.close()
@@ -1051,11 +758,7 @@ class SocioDBHelper(context: Context) :
     // OBTENER ACTIVIDADES DE UN CLIENTE
     // =====================================================
 
-    private fun obtenerActividadesAsignadas(
-        db: SQLiteDatabase,
-        dniSocio: String
-    ): MutableList<String> {
-
+    private fun obtenerActividadesAsignadas(db: SQLiteDatabase, dniSocio: String): MutableList<String> {
         val cursor = db.rawQuery(
             """
             SELECT a.$COLUMN_ACT_NOMBRE
@@ -1069,7 +772,6 @@ class SocioDBHelper(context: Context) :
         )
 
         val actividades = mutableListOf<String>()
-
         try {
             while (cursor.moveToNext()) {
                 actividades.add(cursor.getString(0))
@@ -1077,7 +779,6 @@ class SocioDBHelper(context: Context) :
         } finally {
             cursor.close()
         }
-
         return actividades
     }
 
@@ -1085,15 +786,9 @@ class SocioDBHelper(context: Context) :
     // QUITAR ACTIVIDAD DE CLIENTE
     // =====================================================
 
-    fun quitarActividadASocio(
-        dniSocio: String,
-        nombreActividad: String
-    ): Boolean {
-
+    fun quitarActividadASocio(dniSocio: String, nombreActividad: String): Boolean {
         val db = writableDatabase
-
         return try {
-
             val resultado = db.delete(
                 TABLE_USUARIO_ACTIVIDADES,
                 """
@@ -1106,9 +801,7 @@ class SocioDBHelper(context: Context) :
                 """.trimIndent(),
                 arrayOf(dniSocio, nombreActividad)
             )
-
             resultado > 0
-
         } finally {
             db.close()
         }
@@ -1129,15 +822,11 @@ class SocioDBHelper(context: Context) :
         cantidadCuotas: Int,
         detalles: List<DetalleFacturaInput>
     ): Long {
-
         val db = writableDatabase
-
         db.beginTransaction()
 
         try {
-
             val valoresFactura = ContentValues().apply {
-
                 put(COLUMN_FACTURA_NUMERO, numeroFactura)
                 put(COLUMN_FACTURA_DNI, dniSocio)
                 put(COLUMN_FACTURA_FECHA, fechaEmision)
@@ -1148,48 +837,25 @@ class SocioDBHelper(context: Context) :
                 put(COLUMN_FACTURA_CUOTAS, cantidadCuotas)
             }
 
-            val facturaId = db.insert(
-                TABLE_FACTURAS,
-                null,
-                valoresFactura
-            )
+            val facturaId = db.insert(TABLE_FACTURAS, null, valoresFactura)
+            if (facturaId == -1L) return -1L
 
-            if (facturaId == -1L) {
-                return -1L
-            }
-
-            // Guardar cada concepto de la factura
             for (detalle in detalles) {
-
                 val valoresDetalle = ContentValues().apply {
-
                     put(COLUMN_DETALLE_FACTURA_ID, facturaId)
                     put(COLUMN_DETALLE_CONCEPTO, detalle.concepto)
                     put(COLUMN_DETALLE_DESCRIPCION, detalle.descripcion)
                     put(COLUMN_DETALLE_PRECIO, detalle.precioUnitario)
                     put(COLUMN_DETALLE_CANTIDAD, detalle.cantidad)
-
-                    put(
-                        COLUMN_DETALLE_SUBTOTAL,
-                        detalle.precioUnitario * detalle.cantidad
-                    )
+                    put(COLUMN_DETALLE_SUBTOTAL, detalle.precioUnitario * detalle.cantidad)
                 }
 
-                val resultadoDetalle = db.insert(
-                    TABLE_DETALLE_FACTURA,
-                    null,
-                    valoresDetalle
-                )
-
-                if (resultadoDetalle == -1L) {
-                    return -1L
-                }
+                val resultadoDetalle = db.insert(TABLE_DETALLE_FACTURA, null, valoresDetalle)
+                if (resultadoDetalle == -1L) return -1L
             }
 
             db.setTransactionSuccessful()
-
             return facturaId
-
         } finally {
             db.endTransaction()
             db.close()
@@ -1209,21 +875,12 @@ class SocioDBHelper(context: Context) :
         cuotas: Int,
         valorCuota: Double
     ): Boolean {
-
         val db = writableDatabase
-
         val valores = ContentValues().apply {
-
             put(COLUMN_PAGO_DNI, dniSocio)
             put(COLUMN_MONTO, monto)
             put(COLUMN_FECHA, fecha)
-
-            if (facturaId != null) {
-                put(COLUMN_PAGO_FACTURA_ID, facturaId)
-            } else {
-                putNull(COLUMN_PAGO_FACTURA_ID)
-            }
-
+            if (facturaId != null) put(COLUMN_PAGO_FACTURA_ID, facturaId) else putNull(COLUMN_PAGO_FACTURA_ID)
             put(COLUMN_MEDIO_PAGO, medioPago)
             put(COLUMN_CUOTAS_PAGO, cuotas)
             put(COLUMN_VALOR_CUOTA, valorCuota)
@@ -1236,25 +893,18 @@ class SocioDBHelper(context: Context) :
             db.close()
         }
     }
+
     // =====================================================
-// CARGAR DATOS INICIALES SIN DUPLICAR CLIENTES
-// =====================================================
+    // CARGAR DATOS INICIALES SIN DUPLICAR CLIENTES
+    // =====================================================
 
     fun cargarDatosInicialesSiFaltan() {
+        sincronizarCatalogoActividades(DatosClub.listaActividades)
 
-        // Cargar el catálogo de actividades
-        sincronizarCatalogoActividades(
-            DatosClub.listaActividades
-        )
-
-        // Importar clientes de prueba que todavía no existan
         for (cliente in DatosClub.clientes) {
-
-            val clienteExistente =
-                obtenerClientePorDni(cliente.dni)
+            val clienteExistente = obtenerClientePorDni(cliente.dni)
 
             if (clienteExistente == null) {
-
                 val insertado = insertarUsuario(
                     nombre = cliente.nombre,
                     apellido = cliente.apellido,
@@ -1268,24 +918,12 @@ class SocioDBHelper(context: Context) :
                     cuotaAlDia = if (cliente.cuotaAlDia) 1 else 0,
                     vencimiento = cliente.vencimiento.orEmpty()
                 )
-
-                if (!insertado) {
-                    continue
-                }
+                if (!insertado) continue
             }
 
-            // Recuperar las actividades asignadas
             for (actividad in cliente.actividades) {
-
-                if (!tieneActividadAsignada(
-                        cliente.dni,
-                        actividad
-                    )
-                ) {
-                    asignarActividadASocio(
-                        cliente.dni,
-                        actividad
-                    )
+                if (!tieneActividadAsignada(cliente.dni, actividad)) {
+                    asignarActividadASocio(cliente.dni, actividad)
                 }
             }
         }
@@ -1295,12 +933,8 @@ class SocioDBHelper(context: Context) :
     // OBTENER DETALLE DE ACTIVIDADES DE UN SOCIO
     // =====================================================
 
-    fun obtenerDetallesActividadesDeSocio(
-        dniSocio: String
-    ): List<DetalleFacturaInput> {
-
+    fun obtenerDetallesActividadesDeSocio(dniSocio: String): List<DetalleFacturaInput> {
         val db = readableDatabase
-
         val cursor = db.rawQuery(
             """
             SELECT
@@ -1316,14 +950,10 @@ class SocioDBHelper(context: Context) :
         )
 
         val detalles = mutableListOf<DetalleFacturaInput>()
-
         try {
-
             while (cursor.moveToNext()) {
-
                 val nombre = cursor.getString(0)
                 val precio = cursor.getDouble(1)
-
                 detalles.add(
                     DetalleFacturaInput(
                         concepto = "Actividad",
@@ -1333,12 +963,10 @@ class SocioDBHelper(context: Context) :
                     )
                 )
             }
-
         } finally {
             cursor.close()
             db.close()
         }
-
         return detalles
     }
 
@@ -1354,44 +982,26 @@ class SocioDBHelper(context: Context) :
         cantidadCuotas: Int,
         detalles: List<DetalleFacturaInput>
     ): Long {
-
-        if (
-            numeroFactura.isBlank() ||
-            dniSocio.isBlank() ||
-            formaPago.isBlank() ||
-            cantidadCuotas <= 0 ||
-            detalles.isEmpty()
-        ) {
+        if (numeroFactura.isBlank() || dniSocio.isBlank() || formaPago.isBlank() || cantidadCuotas <= 0 || detalles.isEmpty()) {
             return -1L
         }
 
-        if (detalles.any {
-                it.precioUnitario <= 0 || it.cantidad <= 0
-            }
-        ) {
+        if (detalles.any { it.precioUnitario <= 0 || it.cantidad <= 0 }) {
             return -1L
         }
 
-        val total = detalles.sumOf {
-            it.precioUnitario * it.cantidad
-        }
+        val total = detalles.sumOf { it.precioUnitario * it.cantidad }
 
         if (total <= 0) {
             return -1L
         }
 
         val db = writableDatabase
-
         db.beginTransaction()
 
         try {
-
-            // =============================================
             // INSERTAR FACTURA
-            // =============================================
-
             val valoresFactura = ContentValues().apply {
-
                 put(COLUMN_FACTURA_NUMERO, numeroFactura)
                 put(COLUMN_FACTURA_DNI, dniSocio)
                 put(COLUMN_FACTURA_FECHA, fecha)
@@ -1402,131 +1012,74 @@ class SocioDBHelper(context: Context) :
                 put(COLUMN_FACTURA_CUOTAS, cantidadCuotas)
             }
 
-            val facturaId = db.insert(
-                TABLE_FACTURAS,
-                null,
-                valoresFactura
-            )
+            val facturaId = db.insert(TABLE_FACTURAS, null, valoresFactura)
+            if (facturaId == -1L) return -1L
 
-            if (facturaId == -1L) {
-                return -1L
-            }
-
-            // =============================================
             // INSERTAR DETALLES
-            // =============================================
-
             for (detalle in detalles) {
-
                 val valoresDetalle = ContentValues().apply {
-
-                    put(
-                        COLUMN_DETALLE_FACTURA_ID,
-                        facturaId
-                    )
-
-                    put(
-                        COLUMN_DETALLE_CONCEPTO,
-                        detalle.concepto
-                    )
-
-                    put(
-                        COLUMN_DETALLE_DESCRIPCION,
-                        detalle.descripcion
-                    )
-
-                    put(
-                        COLUMN_DETALLE_PRECIO,
-                        detalle.precioUnitario
-                    )
-
-                    put(
-                        COLUMN_DETALLE_CANTIDAD,
-                        detalle.cantidad
-                    )
-
-                    put(
-                        COLUMN_DETALLE_SUBTOTAL,
-                        detalle.precioUnitario * detalle.cantidad
-                    )
+                    put(COLUMN_DETALLE_FACTURA_ID, facturaId)
+                    put(COLUMN_DETALLE_CONCEPTO, detalle.concepto)
+                    put(COLUMN_DETALLE_DESCRIPCION, detalle.descripcion)
+                    put(COLUMN_DETALLE_PRECIO, detalle.precioUnitario)
+                    put(COLUMN_DETALLE_CANTIDAD, detalle.cantidad)
+                    put(COLUMN_DETALLE_SUBTOTAL, detalle.precioUnitario * detalle.cantidad)
                 }
 
-                val resultadoDetalle = db.insert(
-                    TABLE_DETALLE_FACTURA,
-                    null,
-                    valoresDetalle
-                )
-
-                if (resultadoDetalle == -1L) {
-                    return -1L
-                }
+                val resultadoDetalle = db.insert(TABLE_DETALLE_FACTURA, null, valoresDetalle)
+                if (resultadoDetalle == -1L) return -1L
             }
 
-            // =============================================
             // INSERTAR PAGO
-            // =============================================
-
             val valoresPago = ContentValues().apply {
-
                 put(COLUMN_PAGO_DNI, dniSocio)
                 put(COLUMN_MONTO, total)
                 put(COLUMN_FECHA, fecha)
                 put(COLUMN_PAGO_FACTURA_ID, facturaId)
                 put(COLUMN_MEDIO_PAGO, formaPago)
                 put(COLUMN_CUOTAS_PAGO, cantidadCuotas)
-
-                put(
-                    COLUMN_VALOR_CUOTA,
-                    total / cantidadCuotas
-                )
-
+                put(COLUMN_VALOR_CUOTA, total / cantidadCuotas)
                 put(COLUMN_ESTADO_PAGO, "REGISTRADO")
             }
 
-            val pagoId = db.insert(
-                TABLE_PAGOS,
-                null,
-                valoresPago
-            )
+            val pagoId = db.insert(TABLE_PAGOS, null, valoresPago)
+            if (pagoId == -1L) return -1L
 
-            if (pagoId == -1L) {
-                return -1L
-            }
-
-            // Confirmar todas las operaciones juntas
             db.setTransactionSuccessful()
-
             return facturaId
-
         } finally {
-
             db.endTransaction()
             db.close()
         }
     }
+
+    // =====================================================
+    // MÉTODOS HEREDADOS (ACTUALIZADOS A LAS NUEVAS TABLAS)
+    // =====================================================
+
     fun asignarActividadUsuario(dniUsuario: String, idActividad: Int): Boolean {
         val db = this.writableDatabase
         val valores = ContentValues().apply {
-            put("dni_usuario", dniUsuario)
-            put("id_actividad", idActividad)
+            put(COLUMN_REL_DNI, dniUsuario)
+            put(COLUMN_REL_ACTIVIDAD, idActividad)
         }
-        val resultado = db.insert("usuario_actividad", null, valores)
+        val resultado = db.insert(TABLE_USUARIO_ACTIVIDADES, null, valores)
         db.close()
         return resultado != -1L
     }
 
-    fun obtenerActividadesDeUsuario(dniUsuario: String): ArrayList<String>{
+    fun obtenerActividadesDeUsuario(dniUsuario: String): ArrayList<String> {
         val listaActividades = ArrayList<String>()
         val db = this.readableDatabase
         val query = """
             SELECT a.$COLUMN_ACT_NOMBRE
             FROM $TABLE_ACTIVIDADES a
-            INNER JOIN usuario_actividad ua ON a.$COLUMN_ACT_ID = ua.id_actividad
-            WHERE ua.dni_usuario = ?
+            INNER JOIN $TABLE_USUARIO_ACTIVIDADES ua ON a.$COLUMN_ACT_ID = ua.$COLUMN_REL_ACTIVIDAD
+            WHERE ua.$COLUMN_REL_DNI = ?
         """
         val cursor = db.rawQuery(query, arrayOf(dniUsuario))
 
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 val nombreActividad = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ACT_NOMBRE))
                 listaActividades.add(nombreActividad)
@@ -1555,13 +1108,11 @@ class SocioDBHelper(context: Context) :
     fun desasignarActividadDeUsuario(dniUsuario: String, idActividad: Int): Boolean {
         val db = this.writableDatabase
         val resultado = db.delete(
-            "usuario_actividad",
-            "dni_usuario = ? AND id_actividad = ?",
+            TABLE_USUARIO_ACTIVIDADES,
+            "$COLUMN_REL_DNI = ? AND $COLUMN_REL_ACTIVIDAD = ?",
             arrayOf(dniUsuario, idActividad.toString())
         )
         db.close()
         return resultado > 0
     }
-
-
 }
