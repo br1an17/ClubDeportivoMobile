@@ -1,11 +1,9 @@
-
 package com.example.clubdeportivo
 
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -24,36 +22,25 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_activitys_assigned)
 
         // =====================================================
         // RECIBIR DATOS DEL CLIENTE
         // =====================================================
 
-        usuarioNombre =
-            intent.getStringExtra("USUARIO_NOMBRE") ?: ""
-
-        usuarioDni =
-            intent.getStringExtra("USUARIO_DNI") ?: ""
-
-        usuarioId =
-            intent.getStringExtra("USUARIO_ID") ?: ""
+        usuarioNombre = intent.getStringExtra("USUARIO_NOMBRE") ?: ""
+        usuarioDni = intent.getStringExtra("USUARIO_DNI") ?: ""
+        usuarioId = intent.getStringExtra("USUARIO_ID") ?: ""
 
         // =====================================================
         // ELEMENTOS DE LA PANTALLA
         // =====================================================
 
         nombreSocio = findViewById(R.id.tvNombre)
+        contenedorActividades = findViewById(R.id.contenedorActividades)
 
-        contenedorActividades =
-            findViewById(R.id.contenedorActividades)
-
-        val btnAsignarMas =
-            findViewById<Button>(R.id.btnAsignarMasActividades)
-
-        val btnVolver =
-            findViewById<Button>(R.id.btnVolver)
+        val btnAsignarMas = findViewById<Button>(R.id.btnAsignarMasActividades)
+        val btnVolver = findViewById<Button>(R.id.btnVolver)
 
         nombreSocio.text = usuarioNombre
 
@@ -62,16 +49,10 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
         // =====================================================
 
         btnAsignarMas.setOnClickListener {
-
-            val intent = Intent(
-                this,
-                AssignActivityActivity::class.java
-            )
-
+            val intent = Intent(this, AssignActivityActivity::class.java)
             intent.putExtra("USUARIO_NOMBRE", usuarioNombre)
             intent.putExtra("USUARIO_DNI", usuarioDni)
             intent.putExtra("USUARIO_ID", usuarioId)
-
             startActivity(intent)
         }
 
@@ -90,7 +71,6 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
         cargarActividadesSocio()
     }
 
@@ -99,34 +79,23 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
     // =====================================================
 
     private fun cargarActividadesSocio() {
-
         contenedorActividades.removeAllViews()
 
         val dbHelper = SocioDBHelper(this)
 
         val socio = try {
-
             when {
-
-                usuarioDni.isNotBlank() ->
-                    dbHelper.obtenerClientePorDni(usuarioDni)
-
-                usuarioId.isNotBlank() ->
-                    dbHelper.buscarClientePorCriterio(usuarioId)
-
+                usuarioDni.isNotBlank() -> dbHelper.obtenerClientePorDni(usuarioDni)
+                usuarioId.isNotBlank() -> dbHelper.buscarClientePorCriterio(usuarioId)
                 else -> null
             }
-
         } catch (e: Exception) {
-
             Toast.makeText(
                 this,
                 "Error al consultar las actividades: ${e.message}",
                 Toast.LENGTH_LONG
             ).show()
-
             null
-
         } finally {
             dbHelper.close()
         }
@@ -136,17 +105,12 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
         // =====================================================
 
         if (socio == null) {
-
-            mostrarMensaje(
-                "No se encontró el socio en la base de datos"
-            )
-
+            mostrarMensaje("No se encontró el socio en la base de datos")
             return
         }
 
         // Actualizar nombre completo
-        nombreSocio.text =
-            "${socio.nombre} ${socio.apellido}".trim()
+        nombreSocio.text = "${socio.nombre} ${socio.apellido}".trim()
 
         // Obtener actividades recuperadas desde SQLite
         val listaActividades = socio.actividades
@@ -154,15 +118,9 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
         // =====================================================
         // SI NO TIENE ACTIVIDADES
         // =====================================================
-        val dbHelper = SocioDBHelper(this)
-        val listaActividades = dbHelper.obtenerActividadesDeUsuario(usuarioDni)
 
         if (listaActividades.isEmpty()) {
-
-            mostrarMensaje(
-                "El socio no tiene actividades asignadas"
-            )
-
+            mostrarMensaje("El socio no tiene actividades asignadas")
             return
         }
 
@@ -171,23 +129,13 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
         // =====================================================
 
         for (actividad in listaActividades) {
-
             val botonActividad = MaterialButton(this).apply {
-
                 text = actividad
-
                 setTextColor(Color.BLACK)
-
                 textSize = 16f
-
                 setTypeface(null, Typeface.BOLD)
-
-                setBackgroundColor(
-                    Color.parseColor("#DCE7D4")
-                )
-
+                setBackgroundColor(Color.parseColor("#DCE7D4"))
                 cornerRadius = 24
-
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     120
@@ -196,12 +144,9 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
                 }
 
                 setOnClickListener {
-
                     android.app.AlertDialog.Builder(this@ActivitysAsiggnedActivity)
                         .setTitle("Eliminar actividad")
-                        .setMessage(
-                            "¿Estás seguro de que deseas quitar la actividad '$actividad' de este socio?"
-                        )
+                        .setMessage("¿Estás seguro de que deseas quitar la actividad '$actividad' de este socio?")
                         .setPositiveButton("Sí, eliminar") { _, _ ->
 
                             if (usuarioDni.isBlank()) {
@@ -210,20 +155,20 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
                                     "No se pudo identificar el DNI del socio",
                                     Toast.LENGTH_LONG
                                 ).show()
-
                                 return@setPositiveButton
                             }
 
                             val exito = try {
-                                SocioDBHelper(this@ActivitysAsiggnedActivity)
-                                    .quitarActividadASocio(usuarioDni, actividad)
+                                val helper = SocioDBHelper(this@ActivitysAsiggnedActivity)
+                                val resultado = helper.quitarActividadASocio(usuarioDni, actividad)
+                                helper.close() // Cerramos la conexión
+                                resultado
                             } catch (e: Exception) {
                                 Toast.makeText(
                                     this@ActivitysAsiggnedActivity,
                                     "Error al eliminar: ${e.message}",
                                     Toast.LENGTH_LONG
                                 ).show()
-
                                 false
                             }
 
@@ -233,9 +178,7 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
                                     "Se eliminó la actividad $actividad",
                                     Toast.LENGTH_SHORT
                                 ).show()
-
                                 cargarActividadesSocio()
-
                             } else {
                                 Toast.makeText(
                                     this@ActivitysAsiggnedActivity,
@@ -258,42 +201,12 @@ class ActivitysAsiggnedActivity : AppCompatActivity() {
     // =====================================================
 
     private fun mostrarMensaje(mensaje: String) {
-
         val tvVacio = TextView(this).apply {
-
             text = mensaje
-
             setTextColor(Color.GRAY)
-
             textSize = 16f
-
             setPadding(0, 32, 0, 0)
         }
-
         contenedorActividades.addView(tvVacio)
-    }
-                    val builder = android.app.AlertDialog.Builder(this@ActivitysAsiggnedActivity)
-                    builder.setTitle("Eliminar actividad")
-                    builder.setMessage("¿Estás seguro de que deseas quitar la actividad '$actividad' de este socio?")
-
-                    builder.setPositiveButton("Sí, eliminar") { _, _ ->
-                        val idActividad = dbHelper.obtenerIdActividadPorNombre(actividad)
-                        val exito = dbHelper.desasignarActividadDeUsuario(usuarioDni, idActividad)
-
-                        if (exito) {
-                            Toast.makeText(context, "Se eliminó la actividad $actividad", Toast.LENGTH_SHORT).show()
-                            cargarActividadesSocio(contenedor)
-                        } else {
-                            Toast.makeText(context, "No se pudo eliminar la actividad", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    builder.setNegativeButton("Cancelar", null)
-                    builder.show()
-                }
-            }
-            // Aquí se agrega correctamente dentro del for, pero fuera del setOnClickListener
-            contenedor.addView(botonActividad)
-        }
     }
 }
